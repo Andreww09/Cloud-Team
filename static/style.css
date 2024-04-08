@@ -13,9 +13,70 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
 
- body {
-    font-family: "helvetica", sans-serif;
+.container {
+    width: 600px;
+    height: 250px;
+    align-items: center;
+    float: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.imageContainer {
+    height: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 50px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+}
+
+#uploadedImage {
+    max-width: 100%;
+    max-height: 80%;
+    display: none; /* Initially hide the image */
+}
+
+/* Rest of your CSS code */
+
+
+h2 {
     text-align: center;
-  }
-  
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.inputfile {
+    display: none;
+}
+
+.uploadBtn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.uploadBtn:hover {
+    background-color: #0056b3;
+}
+
+.inputfile + label {
+    margin-bottom: 20px;
+}
