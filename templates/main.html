@@ -1,0 +1,128 @@
+<!doctype html>
+<!--
+ Copyright 2021 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<html>
+<head>
+    <title>Datastore and Firebase Auth Example</title>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!--<h1>Datastore and Firebase Auth Example</h1>-->
+
+<!--<h2>Last 10 visits</h2>-->
+<!--{% for time in times %}-->
+<!--<p>{{ time }}</p>-->
+<!--{% endfor %}-->
+
+
+<div class="imageContainer">
+    <div class="container">
+        <h2>Upload Image</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <label for="imageInput" class="uploadBtn">Choose File</label>
+            <input type="file" name="image" id="imageInput" class="inputfile">
+            <span id="fileName">No file chosen</span>
+            <button type="submit" class="uploadBtn">Upload</button>
+        </form>
+        <div id="results"></div>
+    </div>
+    <div class="container" id="uploadedImageContainer">
+        <h2>Uploaded Image</h2>
+        <img id="uploadedImage" src="" alt="Uploaded Image">
+    </div>
+</div>
+
+<!-- History button -->
+<button id="historyBtn" class="historyBtn">History</button>
+<div id="historyResults" class="historyResults"></div>
+
+
+<script>
+    document.getElementById("imageInput").addEventListener("change", function() {
+        var fileName = this.files[0].name;
+        document.getElementById("fileName").textContent = fileName;
+    });
+
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#imageInput').change(function() {
+            var file = this.files[0];
+            var fileName = file.name;
+            $('#fileName').text(fileName);
+
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                $('#uploadedImage').attr('src', event.target.result);
+                $('#uploadedImage').css('display', 'block');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        $('#uploadForm').submit(function(event) {
+            event.preventDefault();
+
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    var labels = response.labels.join(', ');
+                    $('#results').text('Labels: ' + labels);
+                },
+                error: function(xhr, status, error) {
+                    $('#results').text('Error: ' + xhr.responseJSON.error);
+                }
+            });
+        });
+
+        $('#imageInput').change(function() {
+            var fileName = $(this).val().split('\\').pop();
+            $('#fileName').text(fileName);
+        });
+    });
+      $('#historyBtn').click(function() {
+        $.ajax({
+            url: '/history',
+            type: 'GET',
+            success: function(response) {
+                var historyList = '';
+                response.forEach(function(item) {
+                    // Display image and labels
+                    historyList += '<div>';
+                    historyList += '<img class="history-image" src="' + item.image + '" alt="Image">';
+                    historyList += '<strong>Labels:</strong> ' + item.labels.join(', ');
+                    historyList += '</div>';
+                    historyList += '<br>';
+                });
+                $('#historyResults').html(historyList);
+            },
+            error: function(xhr, status, error) {
+                $('#historyResults').text('Error: ' + xhr.responseJSON.error);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

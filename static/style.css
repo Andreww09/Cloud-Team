@@ -80,3 +80,11 @@ form {
 .inputfile + label {
     margin-bottom: 20px;
 }
+.history-image {
+    max-width: 200px; /* Adjust width as needed */
+    max-height: 150px; /* Adjust height as needed */
+    object-fit: cover; /* Maintain aspect ratio and cover container */
+    border: 1px solid #ccc; /* Optional border */
+    margin-bottom: 10px; /* Add space between images */
+}
+

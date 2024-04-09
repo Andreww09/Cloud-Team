@@ -21,42 +21,29 @@
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css"/>
 </head>
 <body>
 
-<!--<h1>Datastore and Firebase Auth Example</h1>-->
 
-<!--<h2>Last 10 visits</h2>-->
-<!--{% for time in times %}-->
-<!--<p>{{ time }}</p>-->
-<!--{% endfor %}-->
-<script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
- 
-<script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-      apiKey: "AIzaSyDyj8byEgTHHMwU19nT6sOrAL_8vShCmFg",
+<!-- MOCK SNIPPET: DO NOT COPY -->
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+
+ <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDyj8byEgTHHMwU19nT6sOrAL_8vShCmFg",
       authDomain: "ccteam-419717.firebaseapp.com",
       projectId: "ccteam-419717",
       storageBucket: "ccteam-419717.appspot.com",
       messagingSenderId: "530827639736",
       appId: "1:530827639736:web:64ffac8ce01af731e0ed4d",
-      measurementId: "G-9M8K0DK216"
+        measurementId: "G-9M8K0DK216"
     };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
+  firebase.initializeApp(firebaseConfig);
 </script>
-
 <div id="firebaseui-auth-container"></div>
 
 <button id="sign-out" hidden=true>Sign Out</button>
@@ -77,71 +64,155 @@
   {% endif %}
 </div>
 
-<div class="imageContainer">
-    <div class="container">
-        <h2>Upload Image</h2>
-        <form id="uploadForm" enctype="multipart/form-data">
-            <label for="imageInput" class="uploadBtn">Choose File</label>
-            <input type="file" name="image" id="imageInput" class="inputfile">
-            <span id="fileName">No file chosen</span>
-            <button type="submit" class="uploadBtn">Upload</button>
-        </form>
-        <div id="results"></div>
-    </div>
-    <div class="container" id="uploadedImageContainer">
-        <h2>Uploaded Image</h2>
-        <img id="uploadedImage" src="" alt="Uploaded Image">
-    </div>
-</div>
-
 <script>
-    document.getElementById("imageInput").addEventListener("change", function() {
-        var fileName = this.files[0].name;
-        document.getElementById("fileName").textContent = fileName;
+    // FirebaseUI config.
+    var uiConfig = {
+      signInSuccessUrl: 'main.html', // Redirect URL after sign-in
+      signInOptions: [
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
+      ],
+      // Other config options...
+    };
+
+<!--    // Initialize the FirebaseUI Widget using Firebase.-->
+<!--    var ui = new firebaseui.auth.AuthUI(firebase.auth());-->
+
+<!--    // The start method will wait until the DOM is loaded.-->
+<!--    ui.start('#firebaseui-auth-container', uiConfig);-->
+
+    // Redirect user after successful sign-in
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        window.location.href = 'main.html'; // Redirect to main.html
+      }
     });
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#imageInput').change(function() {
-            var file = this.files[0];
-            var fileName = file.name;
-            $('#fileName').text(fileName);
+<!--<h1>Datastore and Firebase Auth Example</h1>-->
 
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                $('#uploadedImage').attr('src', event.target.result);
-                $('#uploadedImage').css('display', 'block');
-            };
-            reader.readAsDataURL(file);
-        });
+<!--<h2>Last 10 visits</h2>-->
+<!--{% for time in times %}-->
+<!--<p>{{ time }}</p>-->
+<!--{% endfor %}-->
 
-        $('#uploadForm').submit(function(event) {
-            event.preventDefault();
+<!--<div id="firebaseui-auth-container"></div>-->
 
-            var formData = new FormData($(this)[0]);
-            $.ajax({
-                url: '/upload',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    var labels = response.labels.join(', ');
-                    $('#results').text('Labels: ' + labels);
-                },
-                error: function(xhr, status, error) {
-                    $('#results').text('Error: ' + xhr.responseJSON.error);
-                }
-            });
-        });
+<!--<button id="sign-out" hidden=true>Sign Out</button>-->
 
-        $('#imageInput').change(function() {
-            var fileName = $(this).val().split('\\').pop();
-            $('#fileName').text(fileName);
-        });
-    });
-</script>
+<!--<div id="login-info" hidden=true>-->
+<!--    <h2>Login info:</h2>-->
+<!--    {% if user_data %}-->
+<!--    <dl>-->
+<!--        <dt>Name</dt>-->
+<!--        <dd>{{ user_data['name'] }}</dd>-->
+<!--        <dt>Email</dt>-->
+<!--        <dd>{{ user_data['email'] }}</dd>-->
+<!--        <dt>Last 10 visits</dt>-->
+<!--        <dd>-->
+<!--            {% for time in times %}-->
+<!--            <p>{{ time['timestamp'] }}</p>-->
+<!--            {% endfor %}-->
+<!--        </dd>-->
+<!--    </dl>-->
+<!--    {% elif error_message %}-->
+<!--    <p>Error: {{ error_message }}</p>-->
+<!--    {% endif %}-->
+<!--</div>-->
+
+<!--<div class="imageContainer">-->
+<!--    <div class="container">-->
+<!--        <h2>Upload Image</h2>-->
+<!--        <form id="uploadForm" enctype="multipart/form-data">-->
+<!--            <label for="imageInput" class="uploadBtn">Choose File</label>-->
+<!--            <input type="file" name="image" id="imageInput" class="inputfile">-->
+<!--            <span id="fileName">No file chosen</span>-->
+<!--            <button type="submit" class="uploadBtn">Upload</button>-->
+<!--        </form>-->
+<!--        <div id="results"></div>-->
+<!--    </div>-->
+<!--    <div class="container" id="uploadedImageContainer">-->
+<!--        <h2>Uploaded Image</h2>-->
+<!--        <img id="uploadedImage" src="" alt="Uploaded Image">-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    document.getElementById("imageInput").addEventListener("change", function() {-->
+<!--        var fileName = this.files[0].name;-->
+<!--        document.getElementById("fileName").textContent = fileName;-->
+<!--    });-->
+<!--</script>-->
+
+
+<!--<script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>-->
+
+<!--<script type="module">-->
+<!--    // Import the functions you need from the SDKs you need-->
+<!--    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";-->
+<!--    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js";-->
+<!--    // TODO: Add SDKs for Firebase products that you want to use-->
+<!--    // https://firebase.google.com/docs/web/setup#available-libraries-->
+
+
+<!--    // Your web app's Firebase configuration-->
+<!--    // For Firebase JS SDK v7.20.0 and later, measurementId is optional-->
+<!--    const firebaseConfig = {-->
+<!--      apiKey: "AIzaSyDyj8byEgTHHMwU19nT6sOrAL_8vShCmFg",-->
+<!--      authDomain: "ccteam-419717.firebaseapp.com",-->
+<!--      projectId: "ccteam-419717",-->
+<!--      storageBucket: "ccteam-419717.appspot.com",-->
+<!--      messagingSenderId: "530827639736",-->
+<!--      appId: "1:530827639736:web:64ffac8ce01af731e0ed4d",-->
+<!--      measurementId: "G-9M8K0DK216"-->
+<!--    };-->
+
+<!--    // Initialize Firebase-->
+<!--    const app = initializeApp(firebaseConfig);-->
+<!--    const analytics = getAnalytics(app);-->
+<!--</script>-->
+
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        $('#imageInput').change(function() {-->
+<!--            var file = this.files[0];-->
+<!--            var fileName = file.name;-->
+<!--            $('#fileName').text(fileName);-->
+
+<!--            var reader = new FileReader();-->
+<!--            reader.onload = function(event) {-->
+<!--                $('#uploadedImage').attr('src', event.target.result);-->
+<!--                $('#uploadedImage').css('display', 'block');-->
+<!--            };-->
+<!--            reader.readAsDataURL(file);-->
+<!--        });-->
+
+<!--        $('#uploadForm').submit(function(event) {-->
+<!--            event.preventDefault();-->
+
+<!--            var formData = new FormData($(this)[0]);-->
+<!--            $.ajax({-->
+<!--                url: '/upload',-->
+<!--                type: 'POST',-->
+<!--                data: formData,-->
+<!--                processData: false,-->
+<!--                contentType: false,-->
+<!--                success: function(response) {-->
+<!--                    var labels = response.labels.join(', ');-->
+<!--                    $('#results').text('Labels: ' + labels);-->
+<!--                },-->
+<!--                error: function(xhr, status, error) {-->
+<!--                    $('#results').text('Error: ' + xhr.responseJSON.error);-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+
+<!--        $('#imageInput').change(function() {-->
+<!--            var fileName = $(this).val().split('\\').pop();-->
+<!--            $('#fileName').text(fileName);-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 
 </body>
 </html>
