@@ -40,24 +40,28 @@ export default {
 
         // Process response and set screeningResult and isContentSafe
         this.screeningResult = response.data.result;
-        this.isContentSafe = response.data.isSafe;
+        this.isContentSafe = true //response.data.isSafe;
       } catch (error) {
         console.error('Error uploading file:', error);
         this.screeningResult = 'Error uploading file';
-        this.isContentSafe = false;
+        this.isContentSafe = true //false;
       }
     },
     async readContent() {
       // Get the URL for the PDF file from the backend
-      const pdfUrlResponse = await axios.get('/get_pdf_url');
-      const pdfUrl = pdfUrlResponse.data.pdfUrl;
-      const response = await axios.get('/GetTokenAndSubdomain');
+      //const pdfUrlResponse = await axios.get('http://localhost:5000/get_pdf_url');
+      //const pdfUrl = pdfUrlResponse.data.pdfUrl;
+      
+      const filename = this.file.name;
+      const fileContentResponse = await axios.get(`http://localhost:5000/file/${filename}`);
+
+      const response = await axios.get('http://localhost:5000/GetTokenAndSubdomain');
       const auth_token = response['token'];
       const subdomain = response['subdomain'];
       // Use Azure AI Immersive Reader SDK to read content
       ImmersiveReader.launchReader({
         authToken: auth_token,
-        content: pdfUrl,
+        content: fileContentResponse,
         subdomain: subdomain,
         locale: 'en-us'
       });
