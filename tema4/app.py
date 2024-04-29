@@ -5,39 +5,40 @@ import requests
 import json
 from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, jsonify
-
-app = Flask(__name__)
-
-load_dotenv()
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
+from azure.storage.blob import BlobServiceClient
+
+load_dotenv()
+
 
 app = Flask(__name__)
+blob_service_client = BlobServiceClient.from_connection_string(str(os.environ.get('CONNECTION_STRING')))
+blob_container_client = blob_service_client.get_container_client(str(os.environ.get('CONTAINER_NAME')))
 
 
 @app.route('/')
 def index():
-   print('Request for index page received')
-   return render_template('index.html')
+    print('Request for index page received')
+    return render_template('index.html')
+
 
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
+
 @app.route('/hello', methods=['POST'])
 def hello():
-   name = request.form.get('name')
+    name = request.form.get('name')
 
-   if name:
-       print('Request for hello page received with name=%s' % name)
-       return render_template('hello.html', name = name)
-   else:
-       print('Request for hello page received with no name or blank name -- redirecting')
-       return redirect(url_for('index'))
-
-
-
+    if name:
+        print('Request for hello page received with name=%s' % name)
+        return render_template('hello.html', name=name)
+    else:
+        print('Request for hello page received with no name or blank name -- redirecting')
+        return redirect(url_for('index'))
 
 
 @app.route('/reader')
@@ -81,5 +82,49 @@ def getTokenAndSubdomain():
             print(message, e)
             return jsonify(error=message)
 
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    print("here")
+    # Check if the post request has the file part
+    if 'file' not in request.files:
+        return 'No file part', 400
+
+    file = request.files['file']
+
+    # If the user does not select a file, the browser submits an empty file without a filename
+    if file.filename == '':
+        return 'No selected file', 400
+
+    # If the file is present and valid, you can access its properties like filename
+    if file:
+        filename = file.filename
+        content_type = file.content_type
+        file_size = len(file.read())  # Read the file content to get its size
+        file.seek(0)  # Reset file pointer for saving
+
+        # Process the file as needed, here just printing the information
+        print(f"Received file: {filename}, Content-Type: {content_type}, Size: {file_size} bytes")
+
+        # You can save the file to disk or perform further processing here
+
+        return 'File uploaded successfully', 200
+
+    return 'Error in file upload', 500
+
+@app.route('/list-default-stories')
+def list_files():
+    # Retrieve a list of blob names in the container
+    blob_list = blob_container_client.list_blobs()
+    file_names = [blob.name for blob in blob_list]
+    return jsonify(file_names)
+
+@app.route('/file/<file_name>')
+def get_file(file_name):
+    # Retrieve a specific blob (file) from the container
+    blob_client = blob_container_client.get_blob_client(file_name)
+    file_content = blob_client.download_blob().readall()
+    return file_content
+
 if __name__ == '__main__':
-   app.run()
+    app.run()

@@ -32,7 +32,7 @@ export default {
         formData.append('file', this.file);
 
         // Make HTTP POST request to Flask backend
-        const response = await axios.post('/upload', formData, {
+        const response = await axios.post('http://localhost:5000/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
