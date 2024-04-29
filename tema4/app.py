@@ -150,7 +150,7 @@ def get_file(file_name):
         text_content += page.extract_text()
 
     response = make_response('File uploaded successfully', 200)
-    response.headers['Access-Control-Allow-Origin'] = 'http://127.0.0.1:5000'
+    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
     response.data = text_content
     return response
 
