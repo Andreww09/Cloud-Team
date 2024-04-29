@@ -8,9 +8,9 @@ from flask import Flask, redirect, render_template, request, jsonify, make_respo
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 from azure.storage.blob import BlobServiceClient
+import PyPDF2
 
 load_dotenv()
-
 
 app = Flask(__name__)
 blob_service_client = BlobServiceClient.from_connection_string(str(os.environ.get('CONNECTION_STRING')))
@@ -83,7 +83,6 @@ def getTokenAndSubdomain():
             return jsonify(error=message)
 
 
-
 @app.route('/upload', methods=['POST'])
 def upload():
     # Check if the post request has the file part
@@ -124,6 +123,7 @@ def upload():
     response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
     return response
 
+
 @app.route('/list-default-stories')
 def list_files():
     # Retrieve a list of blob names in the container
@@ -131,12 +131,29 @@ def list_files():
     file_names = [blob.name for blob in blob_list]
     return jsonify(file_names)
 
+
 @app.route('/file/<file_name>')
 def get_file(file_name):
     # Retrieve a specific blob (file) from the container
     blob_client = blob_container_client.get_blob_client(file_name)
     file_content = blob_client.download_blob().readall()
-    return file_content
+
+    upload_path = os.path.join("uploads", file_name)
+    if os.path.exists(upload_path) is False:
+        with open(upload_path, 'wb') as file:
+            file.write(file_content)
+
+    # Create a PDF reader object from the provided content
+    text_content = ""
+    pdf_reader = PyPDF2.PdfReader(f"uploads//{file_name}")
+    for page in pdf_reader.pages:
+        text_content += page.extract_text()
+
+    response = make_response('File uploaded successfully', 200)
+    response.headers['Access-Control-Allow-Origin'] = 'http://127.0.0.1:5000'
+    response.data = text_content
+    return response
+
 
 if __name__ == '__main__':
     app.run()
