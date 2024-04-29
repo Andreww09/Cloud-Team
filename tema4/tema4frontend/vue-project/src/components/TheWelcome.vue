@@ -8,6 +8,10 @@
       <button v-if="isContentSafe" @click="readContent">Read Content</button>
       <p v-else>The content is deemed unsafe and cannot be read out loud.</p>
     </div>
+    <div v-if="pdfContent">
+      <h2>Uploaded PDF Content:</h2>
+      <pre>{{ pdfContent }}</pre>
+    </div>
   </div>
 </template>
 
@@ -19,7 +23,8 @@ export default {
     return {
       file: null,
       screeningResult: null,
-      isContentSafe: false
+      isContentSafe: false,
+      pdfContent: null // to store the content of the uploaded PDF
     };
   },
   methods: {
@@ -41,6 +46,9 @@ export default {
         // Process response and set screeningResult and isContentSafe
         this.screeningResult = response.data.result;
         this.isContentSafe = true //response.data.isSafe;
+
+        // Set pdfContent to null when a new file is uploaded
+        this.pdfContent = null;
       } catch (error) {
         console.error('Error uploading file:', error);
         this.screeningResult = 'Error uploading file';
@@ -48,23 +56,29 @@ export default {
       }
     },
     async readContent() {
-      // Get the URL for the PDF file from the backend
-      //const pdfUrlResponse = await axios.get('http://localhost:5000/get_pdf_url');
-      //const pdfUrl = pdfUrlResponse.data.pdfUrl;
-      
-      const filename = this.file.name;
-      const fileContentResponse = await axios.get(`http://localhost:5000/file/${filename}`);
+      try {
+        // Get the content of the uploaded PDF file
+        const filename = this.file.name;
+        const fileContentResponse = await axios.get(`http://localhost:5000/file/${filename}`);
 
-      const response = await axios.get('http://localhost:5000/GetTokenAndSubdomain');
-      const auth_token = response['token'];
-      const subdomain = response['subdomain'];
-      // Use Azure AI Immersive Reader SDK to read content
-      ImmersiveReader.launchReader({
-        authToken: auth_token,
-        content: fileContentResponse,
-        subdomain: subdomain,
-        locale: 'en-us'
-      });
+        // Store the content in pdfContent
+        this.pdfContent = fileContentResponse.data;
+
+        // Get the access token and subdomain for Azure AI Immersive Reader
+        const response = await axios.get('http://localhost:5000/GetTokenAndSubdomain');
+        const auth_token = response.data.token;
+        const subdomain = response.data.subdomain;
+
+        // Use Azure AI Immersive Reader SDK to read content
+        ImmersiveReader.launchReader({
+          authToken: auth_token,
+          content: this.pdfContent, // Pass the content of the PDF file
+          subdomain: subdomain,
+          locale: 'en-us'
+        });
+      } catch (error) {
+        console.error('Error reading content:', error);
+      }
     }
   }
 }
