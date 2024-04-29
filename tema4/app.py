@@ -9,6 +9,9 @@ from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 from azure.storage.blob import BlobServiceClient
 import PyPDF2
+import jwt
+from functools import wraps
+from flask import Flask, request, jsonify
 
 load_dotenv()
 
@@ -50,6 +53,28 @@ def reader():
 def options():
     'Show the options page'
     return render_template('options.html')
+
+
+@app.route('/redirected')
+def redirected():
+    # Get the token from the query parameters
+    session_cookie = request.headers.get('Cookie')
+
+    session_cookie = session_cookie[session_cookie.find('session') + 8:]
+    if session_cookie:
+        # session['user_id'] = user.id
+
+        # Return response with session cookie
+
+        response = jsonify({'message': 'Successfully logged in'})
+        response.set_cookie('session', session_cookie)  # Set session cookie
+        return response
+    else:
+        response = jsonify({'message': 'Not authenticated'})
+        return response
+
+
+# return render_template('redirected.html')
 
 
 @app.route('/GetTokenAndSubdomain', methods=['GET'])

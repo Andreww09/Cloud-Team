@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Authentication</title>
+    <script src="https://cdn.jsdelivr.net/npm/msal@1.11.0/dist/msal.min.js"></script>
+    <script src="https://alcdn.msauth.net/browser/2.20.0/js/msal-browser.min.js"></script>
+    <script>
+        const msalConfig = {
+            auth: {
+                clientId: "5b452d62-7898-49bf-9098-7e915325c547",
+                authority: "https://login.microsoftonline.com/123327fa-5aee-401e-87f8-febcfd9634fa",
+                redirectUri: 'http://localhost:5000' // Update with your redirect URI
+            }
+        };
+
+        const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+        async function checkAuthentication() {
+            const accounts = await msalInstance.getAllAccounts();
+            console.log(accounts);
+            if (accounts.length > 0) {
+                // User is authenticated
+                console.log('User is authenticated');
+                // You can perform further actions here
+            } else {
+                // User is not authenticated
+                console.log('User is not authenticated');
+            }
+        }
+
+        window.onload = checkAuthentication;
+    </script>
+</head>
+<body>
+    <h1>Checking Authentication Status</h1>
+</body>
+</html>
