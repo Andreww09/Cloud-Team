@@ -4,7 +4,7 @@ import os
 import requests
 import json
 from dotenv import load_dotenv
-from flask import Flask, redirect, render_template, request, jsonify
+from flask import Flask, redirect, render_template, request, jsonify, make_response
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 from azure.storage.blob import BlobServiceClient
@@ -83,34 +83,46 @@ def getTokenAndSubdomain():
             return jsonify(error=message)
 
 
+
 @app.route('/upload', methods=['POST'])
-def upload_file():
-    print("here")
+def upload():
     # Check if the post request has the file part
     if 'file' not in request.files:
-        return 'No file part', 400
+        response = make_response('No file part', 400)
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+        return response
 
     file = request.files['file']
 
     # If the user does not select a file, the browser submits an empty file without a filename
     if file.filename == '':
-        return 'No selected file', 400
+        response = make_response('No selected file', 400)
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+        return response
 
     # If the file is present and valid, you can access its properties like filename
     if file:
         filename = file.filename
-        content_type = file.content_type
-        file_size = len(file.read())  # Read the file content to get its size
-        file.seek(0)  # Reset file pointer for saving
+
+        # Save the file to disk
+        file.save(os.path.join('uploads', filename))
 
         # Process the file as needed, here just printing the information
+        content_type = file.content_type
+        file_size = os.path.getsize(os.path.join('uploads', filename))
+
         print(f"Received file: {filename}, Content-Type: {content_type}, Size: {file_size} bytes")
 
-        # You can save the file to disk or perform further processing here
+        # You can perform further processing here, such as parsing the file contents, analyzing, etc.
 
-        return 'File uploaded successfully', 200
+        # Add CORS header
+        response = make_response('File uploaded successfully', 200)
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+        return response
 
-    return 'Error in file upload', 500
+    response = make_response('Error in file upload', 500)
+    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+    return response
 
 @app.route('/list-default-stories')
 def list_files():
