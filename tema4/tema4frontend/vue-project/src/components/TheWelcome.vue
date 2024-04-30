@@ -21,7 +21,7 @@
         <h2>Default Stories:</h2>
         <ul>
           <li v-for="story in defaultStories" :key="story">
-            <a href="#" @click="readDefaultStory(story)">{{ story }}</a>
+            <a href="#" @click="readUploadedContent(story)">{{ story }}</a>
           </li>
         </ul>
       </div>
@@ -59,6 +59,13 @@ export default {
     this.checkAuthentication();
     // Fetch default stories when the component is mounted
     this.fetchDefaultStories();
+    const script = document.createElement('script');
+
+    // Set the source attribute to the Immersive Reader SDK URL
+    script.src = 'https://ircdname.azureedge.net/immersivereadersdk/immersive-reader-sdk.1.4.0.js';
+
+    // Append the script element to the document body
+    document.body.appendChild(script);
   },
   methods: {
     async fetchDefaultStories() {
@@ -83,7 +90,6 @@ export default {
       try {
         // Call an API endpoint on the Flask backend to check authentication status
         const response = await axios.get('http://localhost:5000/check-authentication');
-
         // Set isAuthenticated based on the response from the backend
         this.isAuthenticated = response.data.isAuthenticated;
         this.user = response.data.user;
@@ -142,14 +148,16 @@ export default {
         const response = await axios.get('http://localhost:5000/GetTokenAndSubdomain');
         const auth_token = response.data.token;
         const subdomain = response.data.subdomain;
-
+        const content = {
+          title: filename,
+          chunks: [{
+            content: fileContentResponse.data,
+            lang: 'en'
+          }]
+        }
         // Use Azure AI Immersive Reader SDK to read content
-        ImmersiveReader.launchReader({
-          authToken: auth_token,
-          content: this.pdfContent, // Pass the content of the PDF file
-          subdomain: subdomain,
-          locale: 'en-us'
-        });
+        ImmersiveReader.launchAsync(auth_token, subdomain, content);
+        
       } catch (error) {
         console.error('Error reading content:', error);
       }
@@ -163,14 +171,16 @@ export default {
         const response = await axios.get('http://localhost:5000/GetTokenAndSubdomain');
         const auth_token = response.data.token;
         const subdomain = response.data.subdomain;
-
+        const content = {
+          title: filename,
+          chunks: [{
+            content: fileContentResponse.data,
+            lang: 'en'
+          }]
+        }
         // Use Azure AI Immersive Reader SDK to read content
-        ImmersiveReader.launchReader({
-          authToken: auth_token,
-          content: fileContentResponse.data, // Pass the content of the PDF file
-          subdomain: subdomain,
-          locale: 'en-us'
-        });
+        ImmersiveReader.launchAsync(auth_token, subdomain, content);
+
       } catch (error) {
         console.error('Error reading content:', error);
       }
