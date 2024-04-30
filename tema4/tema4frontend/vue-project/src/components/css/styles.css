@@ -1,0 +1,35 @@
+/* Add these styles to your existing CSS file or <style> tag in Vue component */
+
+/* Basic button style */
+button {
+    padding: 10px 20px;
+    background-color: #007bff; /* Blue color */
+    color: #fff; /* White text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Secondary button style */
+  button.secondary {
+    background-color: #6c757d; /* Gray color */
+  }
+  
+  button.secondary:hover {
+    background-color: #495057; /* Darker gray on hover */
+  }
+  
+  /* Danger button style */
+  button.danger {
+    background-color: #dc3545; /* Red color */
+  }
+  
+  button.danger:hover {
+    background-color: #c82333; /* Darker red on hover */
+  }
+  

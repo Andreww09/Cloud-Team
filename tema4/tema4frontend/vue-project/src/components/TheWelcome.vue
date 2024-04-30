@@ -50,7 +50,7 @@ export default {
       isContentSafe: false,
       pdfContent: null, // to store the content of the uploaded PDF
       filename: null, // to store the name of the uploaded PDF
-      uploadedFiles: [] // to store previously uploaded files
+      uploadedFiles: [], // to store previously uploaded files
       defaultStories: [] // to store the list of default story names
     };
   },
@@ -178,3 +178,5 @@ export default {
   }
 }
 </script>
+
+<style src="./css/styles.css"></style>
