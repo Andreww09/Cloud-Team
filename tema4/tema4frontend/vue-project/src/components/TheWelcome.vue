@@ -20,7 +20,7 @@
         <h2>Default Stories:</h2>
         <ul>
           <li v-for="story in defaultStories" :key="story">
-            <a href="#" @click="readUploadedContent(story)">{{ story }}</a>
+            <a href="#" @click="readDefaultContent(story)">{{ story }}</a>
           </li>
         </ul>
       </div>
@@ -126,11 +126,12 @@ export default {
         if (safetyCheckResponse.data.isSafe) {
           // If the file is safe, proceed with uploading it to the backend
           await axios.post('http://localhost:5000/upload', formData);
+          this.isContentSafe = true;
         } else {
           // If the file is deemed unsafe, set the screeningResult accordingly
+          this.isContentSafe = false;
           this.screeningResult = 'The content is deemed unsafe and cannot be read out loud.';
         }
-        this.isContentSafe = safetyCheckResponse.data.isSafe;
       } catch (error) {
         console.error('Error uploading file:', error);
       }
@@ -167,6 +168,29 @@ export default {
       try {
         // Fetch content of previously uploaded PDF file
         const fileContentResponse = await axios.get(`http://localhost:5000/file/${filename}`);
+
+        // Use Azure AI Immersive Reader SDK to read content
+        const response = await axios.get('http://localhost:5000/GetTokenAndSubdomain');
+        const auth_token = response.data.token;
+        const subdomain = response.data.subdomain;
+        const content = {
+          title: filename,
+          chunks: [{
+            content: fileContentResponse.data,
+            lang: 'en'
+          }]
+        }
+        // Use Azure AI Immersive Reader SDK to read content
+        ImmersiveReader.launchAsync(auth_token, subdomain, content);
+
+      } catch (error) {
+        console.error('Error reading content:', error);
+      }
+    },
+     async readDefaultContent(filename) {
+      try {
+        // Fetch content of previously uploaded PDF file
+        const fileContentResponse = await axios.get(`http://localhost:5000/local-file/${filename}`);
 
         // Use Azure AI Immersive Reader SDK to read content
         const response = await axios.get('http://localhost:5000/GetTokenAndSubdomain');
