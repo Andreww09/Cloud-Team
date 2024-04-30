@@ -6,7 +6,7 @@ from urllib.parse import urlparse, urlunparse
 import requests
 import json
 from dotenv import load_dotenv
-from flask import Flask, redirect, render_template, request, jsonify, make_response, session
+from flask import Flask, redirect, render_template, request, jsonify, make_response, session, render_template_string
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 from azure.storage.blob import BlobServiceClient
@@ -73,12 +73,21 @@ def redirected():
         # Set session cookie
         session['session'] = session_cookie
 
-        # Remove fragment identifier from the redirect URL if present
-        redirect_url = "https://localhost:5173"
-        parsed_url = urlparse(redirect_url)
-        redirect_url = urlunparse(parsed_url._replace(fragment=''))
-
-        return redirect(redirect_url, code=302)
+        # Redirect to a temporary page with JavaScript to remove the fragment identifier
+        return render_template_string("""
+            <script>
+            // Function to remove fragment identifier from the URL
+            function removeFragmentIdentifier() {
+                if (window.location.hash && window.location.hash === '#access_token') {
+                    history.replaceState({}, document.title, window.location.pathname + window.location.search);
+                }
+            }
+            // Call the function
+            removeFragmentIdentifier();
+            // Redirect to the original redirect URL without the fragment identifier
+            window.location.href = "https://localhost:5173";
+            </script>
+        """)
     else:
         return redirect("https://readerlogin.b2clogin.com/readerlogin.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_signupsignintest2&client_id=7ae0133c-788a-4466-883f-cc089edc8ab4&nonce=defaultNonce&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fredirected&scope=openid&response_type=id_token&prompt=login", code=302)
 
