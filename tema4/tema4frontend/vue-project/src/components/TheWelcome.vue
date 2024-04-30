@@ -6,14 +6,9 @@
     <div v-else>
       <input type="file" @change="handleFileUpload" v-if="isAuthenticated">
       <button @click="uploadFile" v-if="isAuthenticated">Upload PDF</button>
-      <div v-if="screeningResult && isAuthenticated">
+      <div v-if=" isAuthenticated">
         <p>{{ screeningResult }}</p>
         <button v-if="isContentSafe" @click="readContent">Read Content</button>
-      </div>
-      <div v-if="pdfContent && isAuthenticated">
-        <h2>Uploaded PDF Content:</h2>
-        <pre>{{ filename }}</pre>
-        <pre>{{ pdfContent }}</pre>
       </div>
       <!-- Display list of default stories -->
       <div v-if="defaultStories.length > 0">
