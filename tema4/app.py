@@ -57,6 +57,10 @@ def options():
     'Show the options page'
     return render_template('options.html')
 
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+    return response
 
 @app.route('/redirected')
 def redirected():
@@ -66,9 +70,9 @@ def redirected():
     if session_cookie:
         # Set session cookie
         session['session'] = session_cookie
-        return jsonify({'message': 'Successfully logged in'})
+        return redirect("https://localhost:5173")
     else:
-        return jsonify({'message': 'Not authenticated'})
+        return redirect("https://readerlogin.b2clogin.com/readerlogin.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_signupsignintest2&client_id=7ae0133c-788a-4466-883f-cc089edc8ab4&nonce=defaultNonce&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fredirected&scope=openid&response_type=id_token&prompt=login")
 
 
 # return render_template('redirected.html')
@@ -147,14 +151,10 @@ def upload():
 
 @app.route('/check-authentication')
 def check_authentication():
-    response = make_response("Checked", 200)
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
     if 'session' in session:
-        response.data = jsonify({'isAuthenticated': True})
-        return response
+        return jsonify({'isAuthenticated': True}), 200
     else:
-        response.data = jsonify({'isAuthenticated': False})
-        return response
+        return jsonify({'isAuthenticated': False}), 200
 
 @app.route('/logout')
 def logout():
