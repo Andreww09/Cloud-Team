@@ -135,7 +135,7 @@ export default {
       try {
         // Get the content of the uploaded PDF file
         const filename = this.file.name;
-        if(this.uploadedFiles.indexOf(filename) !== -1)
+        if(!this.uploadedFiles.includes(filename))
         {
           this.uploadedFiles.push(filename);
         }
