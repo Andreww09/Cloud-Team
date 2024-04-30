@@ -135,8 +135,11 @@ export default {
       try {
         // Get the content of the uploaded PDF file
         const filename = this.file.name;
-        this.uploadedFiles.push(filename);
-        const fileContentResponse = await axios.get(`http://localhost:5000/file/${filename}`);
+        if(this.uploadedFiles.indexOf(filename) !== -1)
+        {
+          this.uploadedFiles.push(filename);
+        }
+        const fileContentResponse = await axios.get(`http://localhost:5000/local-file/${filename}`);
 
         // Store the content in pdfContent
         this.pdfContent = fileContentResponse.data;
