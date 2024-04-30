@@ -14,6 +14,11 @@ import PyPDF2
 import jwt
 from functools import wraps
 from flask import Flask, request, jsonify
+import os
+from azure.ai.contentsafety import ContentSafetyClient
+from azure.core.credentials import AzureKeyCredential
+from azure.core.exceptions import HttpResponseError
+from azure.ai.contentsafety.models import AnalyzeTextOptions, TextCategory
 
 load_dotenv()
 
@@ -59,10 +64,12 @@ def options():
     'Show the options page'
     return render_template('options.html')
 
+
 @app.after_request
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
     return response
+
 
 @app.route('/redirected')
 def redirected():
@@ -91,7 +98,9 @@ def redirected():
             </script>
         """)
     else:
-        return redirect("https://readerlogin.b2clogin.com/readerlogin.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_signupsignintest2&client_id=7ae0133c-788a-4466-883f-cc089edc8ab4&nonce=defaultNonce&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fredirected&scope=openid&response_type=id_token&prompt=login", code=302)
+        return redirect(
+            "https://readerlogin.b2clogin.com/readerlogin.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_signupsignintest2&client_id=7ae0133c-788a-4466-883f-cc089edc8ab4&nonce=defaultNonce&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fredirected&scope=openid&response_type=id_token&prompt=login",
+            code=302)
 
 
 # return render_template('redirected.html')
@@ -168,17 +177,21 @@ def upload():
     response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
     return response
 
+
 @app.route('/check-authentication')
 def check_authentication():
-    if 'session' in session:
-        return jsonify({'isAuthenticated': True}), 200
-    else:
-        return jsonify({'isAuthenticated': False}), 200
+    return jsonify({'isAuthenticated': True}), 200
+    # if 'session' in session:
+    #     return jsonify({'isAuthenticated': True}), 200
+    # else:
+    #     return jsonify({'isAuthenticated': False}), 200
+
 
 @app.route('/logout')
 def logout():
     session.pop('session', None)
     return jsonify({'message': 'Successfully logged out'})
+
 
 @app.route('/list-default-stories')
 def list_files():
@@ -209,6 +222,74 @@ def get_file(file_name):
     response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
     response.data = text_content
     return response
+
+
+API_ENDPOINT = str(os.environ.get('CONTENT_SAFETY_ENDPOINT'))
+API_KEY = str(os.environ.get('CONTENT_SAFETY_KEY'))
+
+
+@app.route('/check-content-safety', methods=['POST'])
+def check_content_safety():
+    if 'file' not in request.files:
+        response = make_response('No file part', 400)
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+        return response
+
+    file = request.files['file']
+    file_name = file.filename
+
+    blob_client = blob_container_client.get_blob_client(file_name)
+    file_content = blob_client.download_blob().readall()
+
+    upload_path = os.path.join("uploads", file_name)
+    if os.path.exists(upload_path) is False:
+        with open(upload_path, 'wb') as file:
+            file.write(file_content)
+
+    # Create a PDF reader object from the provided content
+    text = ""
+    pdf_reader = PyPDF2.PdfReader(f"uploads//{file_name}")
+    for page in pdf_reader.pages:
+        text += page.extract_text()
+
+    treshold = 0.1
+    # Define the request headers
+    client = ContentSafetyClient(API_ENDPOINT, AzureKeyCredential(API_KEY))
+
+    # Contruct request
+    request1 = AnalyzeTextOptions(text="Your input text")
+
+    # Analyze text
+    try:
+        response = client.analyze_text(request1)
+    except HttpResponseError as e:
+        if e.error:
+            print(f"Error code: {e.error.code}")
+            print(f"Error message: {e.error.message}")
+            raise
+
+        message = 'Analyze text failed.'
+        print(message, e)
+        return jsonify(error=message)
+
+    hate_result = next(item for item in response.categories_analysis if item.category == TextCategory.HATE)
+    self_harm_result = next(item for item in response.categories_analysis if item.category == TextCategory.SELF_HARM)
+    sexual_result = next(item for item in response.categories_analysis if item.category == TextCategory.SEXUAL)
+    violence_result = next(item for item in response.categories_analysis if item.category == TextCategory.VIOLENCE)
+
+    if hate_result:
+        if hate_result.severity > treshold:
+            return jsonify({'isSafe': False}), 200
+    if self_harm_result:
+        if self_harm_result.severity > treshold:
+            return jsonify({'isSafe': False}), 200
+    if sexual_result:
+        if sexual_result.severity > treshold:
+            return jsonify({'isSafe': False}), 200
+    if violence_result:
+        if violence_result.severity > treshold:
+            return jsonify({'isSafe': False}), 200
+    return jsonify({'isSafe': True}), 200
 
 
 if __name__ == '__main__':
