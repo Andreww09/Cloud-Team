@@ -9,7 +9,6 @@
       <div v-if="screeningResult && isAuthenticated">
         <p>{{ screeningResult }}</p>
         <button v-if="isContentSafe" @click="readContent">Read Content</button>
-        <p v-else>The content is deemed unsafe and cannot be read out loud.</p>
       </div>
       <div v-if="pdfContent && isAuthenticated">
         <h2>Uploaded PDF Content:</h2>
