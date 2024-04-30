@@ -16,6 +16,15 @@
         <pre>{{ filename }}</pre>
         <pre>{{ pdfContent }}</pre>
       </div>
+      <!-- Display list of default stories -->
+      <div v-if="defaultStories.length > 0">
+        <h2>Default Stories:</h2>
+        <ul>
+          <li v-for="story in defaultStories" :key="story">
+            <a href="#" @click="readDefaultStory(story)">{{ story }}</a>
+          </li>
+        </ul>
+      </div>
       <h2>Previously Uploaded Files:</h2>
       <ul>
         <!-- Loop through uploadedFiles and display filenames as clickable links -->
@@ -42,13 +51,26 @@ export default {
       pdfContent: null, // to store the content of the uploaded PDF
       filename: null, // to store the name of the uploaded PDF
       uploadedFiles: [] // to store previously uploaded files
+      defaultStories: [] // to store the list of default story names
     };
   },
   mounted() {
     // Check authentication status when the component is mounted
     this.checkAuthentication();
+    // Fetch default stories when the component is mounted
+    this.fetchDefaultStories();
   },
   methods: {
+    async fetchDefaultStories() {
+      try {
+        // Make an HTTP GET request to fetch the list of default stories from the backend
+        const response = await axios.get('http://localhost:5000/list-default-stories');
+        // Update defaultStories data property with the response data
+        this.defaultStories = response.data;
+      } catch (error) {
+        console.error('Error fetching default stories:', error);
+      }
+    },
     login() {
       try {
         const loginUrl = 'https://readerlogin.b2clogin.com/readerlogin.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_signupsignintest2&client_id=7ae0133c-788a-4466-883f-cc089edc8ab4&nonce=defaultNonce&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fredirected&scope=openid&response_type=id_token&prompt=login';
