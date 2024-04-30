@@ -87,7 +87,7 @@ def redirected():
             removeFragmentIdentifier();
 
             // Redirect to the original redirect URL without the fragment identifier
-            window.location.replace("https://localhost:5173");
+            window.location.replace("http://localhost:5173/");
             </script>
         """)
     else:
