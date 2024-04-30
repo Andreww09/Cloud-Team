@@ -164,7 +164,7 @@ export default {
         console.error('Error reading content:', error);
       }
     },
-    async readUploadedContent(filename) {
+    async readDefaultContent(filename) {
       try {
         // Fetch content of previously uploaded PDF file
         const fileContentResponse = await axios.get(`http://localhost:5000/file/${filename}`);
@@ -187,7 +187,7 @@ export default {
         console.error('Error reading content:', error);
       }
     },
-     async readDefaultContent(filename) {
+     async readUploadedContent(filename) {
       try {
         // Fetch content of previously uploaded PDF file
         const fileContentResponse = await axios.get(`http://localhost:5000/local-file/${filename}`);
