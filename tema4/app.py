@@ -82,10 +82,12 @@ def redirected():
                     history.replaceState({}, document.title, window.location.pathname + window.location.search);
                 }
             }
-            // Call the function
+
+            // Call the function to remove the fragment identifier
             removeFragmentIdentifier();
+
             // Redirect to the original redirect URL without the fragment identifier
-            window.location.href = "https://localhost:5173";
+            window.location.replace("https://localhost:5173");
             </script>
         """)
     else:
