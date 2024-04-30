@@ -4,7 +4,7 @@ import os
 import requests
 import json
 from dotenv import load_dotenv
-from flask import Flask, redirect, render_template, request, jsonify, make_response
+from flask import Flask, redirect, render_template, request, jsonify, make_response, session
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 from azure.storage.blob import BlobServiceClient
@@ -16,6 +16,9 @@ from flask import Flask, request, jsonify
 load_dotenv()
 
 app = Flask(__name__)
+
+app.secret_key = os.urandom(24)
+
 blob_service_client = BlobServiceClient.from_connection_string(str(os.environ.get('CONNECTION_STRING')))
 blob_container_client = blob_service_client.get_container_client(str(os.environ.get('CONTAINER_NAME')))
 
@@ -59,19 +62,13 @@ def options():
 def redirected():
     # Get the token from the query parameters
     session_cookie = request.headers.get('Cookie')
-
-    session_cookie = session_cookie[session_cookie.find('session') + 8:]
+    session_cookie = session_cookie[session_cookie.find('session') + 8:] if session_cookie else None
     if session_cookie:
-        # session['user_id'] = user.id
-
-        # Return response with session cookie
-
-        response = jsonify({'message': 'Successfully logged in'})
-        response.set_cookie('session', session_cookie)  # Set session cookie
-        return response
+        # Set session cookie
+        session['session'] = session_cookie
+        return jsonify({'message': 'Successfully logged in'})
     else:
-        response = jsonify({'message': 'Not authenticated'})
-        return response
+        return jsonify({'message': 'Not authenticated'})
 
 
 # return render_template('redirected.html')
@@ -148,6 +145,21 @@ def upload():
     response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
     return response
 
+@app.route('/check-authentication')
+def check_authentication():
+    response = make_response("Checked", 200)
+    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+    if 'session' in session:
+        response.data = jsonify({'isAuthenticated': True})
+        return response
+    else:
+        response.data = jsonify({'isAuthenticated': False})
+        return response
+
+@app.route('/logout')
+def logout():
+    session.pop('session', None)
+    return jsonify({'message': 'Successfully logged out'})
 
 @app.route('/list-default-stories')
 def list_files():
