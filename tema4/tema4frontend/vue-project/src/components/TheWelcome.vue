@@ -25,13 +25,15 @@
           </li>
         </ul>
       </div>
-      <h2>Previously Uploaded Files:</h2>
-      <ul>
-        <!-- Loop through uploadedFiles and display filenames as clickable links -->
-        <li v-for="file in uploadedFiles" :key="file.name">
-          <a href="#" @click="readUploadedContent(file.name)">{{ file.name }}</a>
-        </li>
-      </ul>
+      <div v-if="uploadedFiles.length > 0">
+        <h2>Previously Uploaded Files:</h2>
+        <ul>
+          <!-- Loop through uploadedFiles and display filenames as clickable links -->
+          <li v-for="file in uploadedFiles" :key="file.name">
+            <a href="#" @click="readUploadedContent(file.name)">{{ file.name }}</a>
+          </li>
+        </ul>
+      </div>
       <button v-if="isAuthenticated" @click="logout">Logout</button>
     </div>
   </div>
@@ -157,7 +159,7 @@ export default {
         }
         // Use Azure AI Immersive Reader SDK to read content
         ImmersiveReader.launchAsync(auth_token, subdomain, content);
-        
+
       } catch (error) {
         console.error('Error reading content:', error);
       }
