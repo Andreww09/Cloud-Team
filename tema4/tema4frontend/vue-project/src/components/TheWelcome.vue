@@ -23,8 +23,8 @@
         <h2>Previously Uploaded Files:</h2>
         <ul>
           <!-- Loop through uploadedFiles and display filenames as clickable links -->
-          <li v-for="file in uploadedFiles" :key="file.name">
-            <a href="#" @click="readUploadedContent(file.name)">{{ file.name }}</a>
+          <li v-for="file in uploadedFiles" :key="file">
+            <a href="#" @click="readUploadedContent(file)">{{ file }}</a>
           </li>
         </ul>
       </div>
