@@ -1,12 +1,14 @@
 import json
 import os
 from dotenv import load_dotenv
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from dotenv import load_dotenv
 import os
 import requests
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 load_dotenv()
 
 
@@ -48,6 +50,12 @@ def extract_asin(url):
     else:
         # If "dp/" is not found, return the last 10 characters
         return url[-10:]
+
+
+# @app.after_request
+# def add_cors_headers(response):
+#     response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+#     return response
 
 
 @app.route('/lookup-product', methods=['GET'])
@@ -144,8 +152,11 @@ def look_up_seller_prices():
         return sort_offers_by_seller_rating(offers, ascending)
     if sorted_by == "price":
         return sort_offers_by_price(offers, ascending)
-
-    return offers
+    response = make_response('success', 200)
+    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+    response.data=offers
+    return response
+    # return offers
 
 
 @app.route('/search-by-keyword', methods=['GET'])
