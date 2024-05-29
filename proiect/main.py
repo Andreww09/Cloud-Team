@@ -92,7 +92,7 @@ def look_up_product():
         'text': reviews_text,
         'rating': rating / rating_count
     }
-    return response
+    return jsonify(response)
 
 
 def sort_offers_by_price(offers, ascending=True):
@@ -152,11 +152,8 @@ def look_up_seller_prices():
         return sort_offers_by_seller_rating(offers, ascending)
     if sorted_by == "price":
         return sort_offers_by_price(offers, ascending)
-    response = make_response('success', 200)
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
-    response.data=offers
-    return response
-    # return offers
+
+    return jsonify(offers)
 
 
 @app.route('/search-by-keyword', methods=['GET'])
@@ -189,7 +186,7 @@ def search_by_keyword():
             "price": product['price']
         }
         products.append(info)
-    return products
+    return jsonify(products)
 
 
 if __name__ == '__main__':
