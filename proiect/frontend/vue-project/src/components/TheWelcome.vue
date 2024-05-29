@@ -7,17 +7,46 @@ import DocumentationIcon from './icons/IconDocumentation.vue'
 import CommunityIcon from './icons/IconCommunity.vue'
 
 // State management
+const keyword = ref('')
 const productName = ref('')
+const sortedBy = ref('price')
+const order = ref('ascending')
+const minPrice = ref('')
+const maxPrice = ref('')
+const products = ref([])
 const lowestPriceProvider = ref(null)
 const searchHistory = ref([])
 const user = ref(null)
 const token = ref(null)
 
-// Function to look up product prices
-const lookUpProduct = async () => {
+// Function to search products by keyword
+const searchByKeyword = async () => {
   try {
-    const response = await axios.get(`http://localhost:5000/lookup-seller-prices`, {
-      params: { url: `https://www.amazon.com/dp/${productName.value}` },
+    const response = await axios.get('http://127.0.0.1:5000/search-by-keyword', {
+      params: {
+        keyword: keyword.value,
+        sortedBy: sortedBy.value,
+        order: order.value,
+        minPrice: minPrice.value,
+        maxPrice: maxPrice.value
+      },
+      headers: { Authorization: `Bearer ${token.value}` }
+    })
+    products.value = response.data
+  } catch (error) {
+    console.error('Error searching products by keyword:', error)
+  }
+}
+
+// Function to search for the lowest price offer by product name
+const searchByName = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:5000/lookup-seller-prices', {
+      params: {
+        url: productName.value,
+        sortedBy: 'price',
+        order: 'ascending'
+      },
       headers: { Authorization: `Bearer ${token.value}` }
     })
     const offers = response.data
@@ -26,6 +55,26 @@ const lookUpProduct = async () => {
     }
   } catch (error) {
     console.error('Error fetching product prices:', error)
+  }
+}
+
+// Function to search for the lowest price offer by ASIN
+const searchLowestPriceByAsin = async (asin) => {
+  try {
+    const response = await axios.get('http://127.0.0.1:5000/lookup-seller-prices', {
+      params: {
+        url: `https://www.amazon.com/dp/${asin}`,
+        sortedBy: 'price',
+        order: 'ascending'
+      },
+      headers: { Authorization: `Bearer ${token.value}` }
+    })
+    const offers = response.data
+    if (offers.length > 0) {
+      lowestPriceProvider.value = offers.sort((a, b) => a.price - b.price)[0]
+    }
+  } catch (error) {
+    console.error('Error fetching product prices by ASIN:', error)
   }
 }
 
@@ -56,7 +105,7 @@ const handleLogout = async () => {
 // Fetch search history after login
 const fetchSearchHistory = async () => {
   try {
-    const response = await axios.get('http://localhost:5000/search-history', {
+    const response = await axios.get('http://127.0.0.1:5000/search-history', {
       headers: { Authorization: `Bearer ${token.value}` }
     })
     searchHistory.value = response.data
@@ -85,9 +134,40 @@ auth.onAuthStateChanged(async (currentUser) => {
       <template #icon>
         <DocumentationIcon />
       </template>
-      <template #heading>Product Price Lookup</template>
-      <input v-model="productName" placeholder="Enter product name or ASIN" />
-      <button @click="lookUpProduct">Search</button>
+      <template #heading>Search by Keyword</template>
+      <input v-model="keyword" placeholder="Enter keyword" />
+      <select v-model="sortedBy">
+        <option value="price">Price</option>
+        <option value="rating">Rating</option>
+      </select>
+      <select v-model="order">
+        <option value="ascending">Ascending</option>
+        <option value="descending">Descending</option>
+      </select>
+      <input v-model="minPrice" type="number" placeholder="Min price" />
+      <input v-model="maxPrice" type="number" placeholder="Max price" />
+      <button @click="searchByKeyword">Search</button>
+      <div v-if="products.length > 0">
+        <h3>Search Results</h3>
+        <ul>
+          <li v-for="product in products" :key="product.asin" @click="searchLowestPriceByAsin(product.asin)">
+            <img :src="product.image" alt="Product Image" />
+            <p>{{ product.description }}</p>
+            <p>Price: ${{ product.price }}</p>
+          </li>
+        </ul>
+      </div>
+    </WelcomeItem>
+
+    <WelcomeItem>
+      <template #icon>
+        <CommunityIcon />
+      </template>
+      <template #heading>Search by Product Name</template>
+      <input v-model="productName" placeholder="Enter product name" />
+      <input v-model="minPrice" type="number" placeholder="Min price" />
+      <input v-model="maxPrice" type="number" placeholder="Max price" />
+      <button @click="searchByName">Search</button>
       <div v-if="lowestPriceProvider">
         <p>Lowest Price Provider:</p>
         <p>Seller: {{ lowestPriceProvider.sellerName }}</p>
