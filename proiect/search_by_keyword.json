@@ -1,0 +1,596 @@
+{
+    "responseStatus": "PRODUCT_FOUND_RESPONSE",
+    "responseMessage": "Product successfully found!",
+    "sortStrategy": "relevanceblender",
+    "domainCode": "com",
+    "keyword": "acer laptops",
+    "numberOfProducts": 16,
+    "numberOfSponsoredProducts": 0,
+    "resultCount": 3000,
+    "currentPage": 1,
+    "lastPage": 20,
+    "selectedCategory": "aps",
+    "foundSponsoredProducts": [],
+    "foundProducts": [
+        "B0BS4BP8FB",
+        "B0BL35XNF5",
+        "B0BY34X9J4",
+        "B0CLNKRXJG",
+        "B0CV5ZSR17",
+        "B0CZ59BNMN",
+        "B0BL86VM7F",
+        "B0CBSZ9CCT",
+        "B0CTMPGG18",
+        "B0CC1T9XM9",
+        "B0CNKX4T3Q",
+        "B086MBQKH2",
+        "B0CP8D4SM2",
+        "B0CRWWB5RJ",
+        "B0CCY66XNS",
+        "B09R5VYRVN"
+    ],
+    "searchProductDetails": [
+        {
+            "productDescription": "Aspire 3 A315-24P-R7VH Slim Laptop | 15.6\" Full HD IPS Display | AMD Ryzen 3 7320U Quad-Core Processor | AMD Radeon Graphics | 8GB LPDDR5 | 128GB NVMe SSD | Wi-Fi 6 | Windows 11 Home in S Mode",
+            "asin": "B0BS4BP8FB",
+            "countReview": 38442,
+            "imgUrl": "https://m.media-amazon.com/images/I/61gKkYQn6lL._AC_UY218_.jpg",
+            "price": 299.99,
+            "retailPrice": 321.99,
+            "productRating": "4.5 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/A315-24P-R7VH-Display-Quad-Core-Processor-Graphics/dp/B0BS4BP8FB/ref=sr_1_1?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-1",
+            "series": null,
+            "deliveryMessage": "FREE delivery Sat, Jun 1 Or fastest delivery Thu, May 30 ",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "128 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "8 GB"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11 S"
+                }
+            ],
+            "salesVolume": "5K+ bought in past month"
+        },
+        {
+            "productDescription": "Aspire 1 A115-32-C96U Slim Laptop | 15.6\" FHD Display | Intel Celeron N4500 Processor | 4GB DDR4 | 128GB eMMC | WiFi 5 | Microsoft 365 Personal 1-Year Subscription | Windows 11 in S Mode, Silver",
+            "asin": "B0BL35XNF5",
+            "countReview": 550,
+            "imgUrl": "https://m.media-amazon.com/images/I/81ux3SQKXrL._AC_UY218_.jpg",
+            "price": 214.82,
+            "retailPrice": 229.99,
+            "productRating": "4.0 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/Acer-A115-32-C96U-Processor-Microsoft-Subscription/dp/B0BL35XNF5/ref=sr_1_2?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-2",
+            "series": null,
+            "deliveryMessage": "FREE delivery Sat, Jun 1 Or fastest delivery Thu, May 30 ",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "128 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "4 GB"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11 S"
+                }
+            ],
+            "salesVolume": "500+ bought in past month"
+        },
+        {
+            "productDescription": "2023 Newest Aspire 5 Slim Laptop, 15.6\" Full HD Display, 20GB RAM, 1TB SSD Storage, AMD Ryzen 4-Core Processor, Backlit Keyboard, Fingerprint Login, HDMI, Ethernet Port, Type-C, Windows 11 S",
+            "asin": "B0BY34X9J4",
+            "countReview": 244,
+            "imgUrl": "https://m.media-amazon.com/images/I/71vlO1XT55L._AC_UY218_.jpg",
+            "price": 499.0,
+            "retailPrice": 0.0,
+            "productRating": "4.3 out of 5 stars",
+            "prime": false,
+            "dpUrl": "/acer-Processor-Keyboard-Fingerprint-Ethernet/dp/B0BY34X9J4/ref=sr_1_3?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-3",
+            "series": null,
+            "deliveryMessage": "FREE delivery Fri, May 31 Only 20 left in stock - order soon.",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "1 TB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "20 GB"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11 S"
+                }
+            ],
+            "salesVolume": "200+ bought in past month"
+        },
+        {
+            "productDescription": "2023 Newest Chromebook 315 Laptop, 15.6\" HD Display, Intel Celeron N4020(Up to 2.8GHz), 4GB RAM, 64GB eMMC, Intel UHD Graphics, 12.5H Long Battery, WiFi, Bluetooth, Chrome OS",
+            "asin": "B0CLNKRXJG",
+            "countReview": 28,
+            "imgUrl": "https://m.media-amazon.com/images/I/61GC32HBM-L._AC_UY218_.jpg",
+            "price": 185.0,
+            "retailPrice": 0.0,
+            "productRating": "4.1 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/acer-Chromebook-Display-Graphics-Bluetooth/dp/B0CLNKRXJG/ref=sr_1_4?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-4",
+            "series": null,
+            "deliveryMessage": "FREE delivery Mon, Jun 3 Only 17 left in stock - order soon.",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "64 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "4.0 GB"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Chrome OS"
+                }
+            ],
+            "salesVolume": "400+ bought in past month"
+        },
+        {
+            "productDescription": "Aspire Go 15 Slim Laptop | 15.6\" FHD (1920 x 1080) IPS | Intel Core i3-N305| Intel UHD Graphics | 8GB LPDDR5 | 128GB UFS | Wi-Fi 6 | AI PC | Windows 11 Home in S Mode | AG15-31P-3947",
+            "asin": "B0CV5ZSR17",
+            "countReview": 17,
+            "imgUrl": "https://m.media-amazon.com/images/I/71hFmMzygKL._AC_UY218_.jpg",
+            "price": 299.99,
+            "retailPrice": 0.0,
+            "productRating": "4.7 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/acer-i3-N305-Graphics-Windows-AG15-31P-3947/dp/B0CV5ZSR17/ref=sr_1_5?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-5",
+            "series": null,
+            "deliveryMessage": "FREE delivery Sat, Jun 1 Or fastest delivery Thu, May 30 ",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "-"
+                },
+                {
+                    "name": "RAM",
+                    "value": "8 GB"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11 S"
+                }
+            ],
+            "salesVolume": "200+ bought in past month"
+        },
+        {
+            "productDescription": "Aspire 1 Slim 15.6\" FHD Newest Flagship Laptop, 16GB RAM, 640GB (512GB PCIe +128GB eMMC), Dual-Core Intel Celeron Processor, Ethernet Port, WiFi, Webcam, Office 365, Windows 11S +HubxcelAccessory",
+            "asin": "B0CZ59BNMN",
+            "countReview": 21,
+            "imgUrl": "https://m.media-amazon.com/images/I/61jYJRuQxwL._AC_UY218_.jpg",
+            "price": 359.0,
+            "retailPrice": 0.0,
+            "productRating": "4.9 out of 5 stars",
+            "prime": false,
+            "dpUrl": "/Acer-Aspire-Newest-Flagship-Laptop/dp/B0CZ59BNMN/ref=sr_1_6?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-6",
+            "series": null,
+            "deliveryMessage": "FREE delivery May 31 - Jun 4 Or fastest delivery Thu, May 30 ",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "512 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "16 GB"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11 Home"
+                }
+            ],
+            "salesVolume": "50+ bought in past month"
+        },
+        {
+            "productDescription": "Aspire 5 A515-56-347N Slim Laptop - 15.6\" Full HD IPS Display - 11th Gen Intel i3-1115G4 Dual Core Processor - 8GB DDR4 - 128GB NVMe SSD - WiFi 6 - Amazon Alexa - Windows 11 Home in S Mode,Silver",
+            "asin": "B0BL86VM7F",
+            "countReview": 897,
+            "imgUrl": "https://m.media-amazon.com/images/I/71pvhTrmZDL._AC_UY218_.jpg",
+            "price": 367.99,
+            "retailPrice": 0.0,
+            "productRating": "4.3 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/Acer-Aspire-A515-56-347N-Slim-Laptop/dp/B0BL86VM7F/ref=sr_1_7?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-7",
+            "series": null,
+            "deliveryMessage": "FREE delivery Sat, Jun 1 ",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "128 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "8 GB"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11 S"
+                }
+            ],
+            "salesVolume": "100+ bought in past month"
+        },
+        {
+            "productDescription": "Aspire 3 A314-36P-35UU Slim Laptop | 14.0\" Full HD IPS Display | Intel Core i3-N305 Processor | Intel UHD Graphics | 8GB LPDDR5 | 128GB NVMe SSD | Wi-Fi 6 | Windows 11 Home in S Mode,Silver",
+            "asin": "B0CBSZ9CCT",
+            "countReview": 28,
+            "imgUrl": "https://m.media-amazon.com/images/I/71UFwaLEv-L._AC_UY218_.jpg",
+            "price": 299.99,
+            "retailPrice": 339.99,
+            "productRating": "4.2 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/A314-36P-35UU-Display-i3-N305-Processor-Graphics/dp/B0CBSZ9CCT/ref=sr_1_8?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-8",
+            "series": null,
+            "deliveryMessage": "FREE delivery Sat, Jun 1 Or fastest delivery Fri, May 31 ",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "14 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "-"
+                },
+                {
+                    "name": "RAM",
+                    "value": "8 GB"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11 S"
+                }
+            ],
+            "salesVolume": "200+ bought in past month"
+        },
+        {
+            "productDescription": "Aspire 1 15.6\" FHD Slim Flagship Laptop, 16GB RAM, 512GB PCIe SSD +128GB eMMC\uff0c Intel Celeron N4500\uff08up to 2.8GHz, Webcam, Type-A&C, Windows 11, 1-Year Office 365 +GM Accessories",
+            "asin": "B0CTMPGG18",
+            "countReview": 96,
+            "imgUrl": "https://m.media-amazon.com/images/I/71ecItcXLbL._AC_UY218_.jpg",
+            "price": 339.99,
+            "retailPrice": 0.0,
+            "productRating": "4.1 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/acer-Flagship-Celeron-N4500%EF%BC%88up-Accessories/dp/B0CTMPGG18/ref=sr_1_9?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-9",
+            "series": null,
+            "deliveryMessage": "FREE delivery Tue, Jun 4 Only 1 left in stock - order soon.",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "512 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "16"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11"
+                }
+            ],
+            "salesVolume": "50+ bought in past month"
+        },
+        {
+            "productDescription": "Aspire Thin and Light Laptop 2023, 15.6\" Full HD Display, AMD Ryzen 3 7320U 4-Core Processor, 8GB LPDDR5, 512GB SSD, Long Battery Life, WiFi 6, HDMI, Type-A&C, Windows 11 Home, GM Mousepad",
+            "asin": "B0CC1T9XM9",
+            "countReview": 7,
+            "imgUrl": "https://m.media-amazon.com/images/I/71ICNlelWGL._AC_UY218_.jpg",
+            "price": 379.99,
+            "retailPrice": 0.0,
+            "productRating": "4.8 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/acer-Display-Processor-Battery-Mousepad/dp/B0CC1T9XM9/ref=sr_1_10?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-10",
+            "series": null,
+            "deliveryMessage": "FREE delivery Sat, Jun 1 ",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "512 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "-"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11"
+                }
+            ],
+            "salesVolume": "50+ bought in past month"
+        },
+        {
+            "productDescription": "acer 2024 Chromebook, 15\" HD IPS ComfyView Screen, Intel Celeron N Processor Up to 2.70GHz, 4GB LPDDR4, 64GB eMMC, Intel UHD Graphics, 6th Gen WiFi, Webcam, Chrome OS, Dove Gray(Renewed)",
+            "asin": "B0CNKX4T3Q",
+            "countReview": 65,
+            "imgUrl": "https://m.media-amazon.com/images/I/51EecQP9FxL._AC_UY218_.jpg",
+            "price": 139.99,
+            "retailPrice": 155.99,
+            "productRating": "4.4 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/acer-Chromebook-15-ComfyView-Processor/dp/B0CNKX4T3Q/ref=sr_1_11?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-11",
+            "series": null,
+            "deliveryMessage": "FREE delivery Mon, Jun 3 Only 18 left in stock - order soon.",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "64 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "4"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Chrome OS"
+                }
+            ],
+            "salesVolume": "100+ bought in past month"
+        },
+        {
+            "productDescription": "Chromebook Spin 311 Convertible Laptop, Intel Celeron N4020, 11.6\" HD Touch, 4GB LPDDR4, 32GB eMMC, Gigabit Wi-Fi 5, Bluetooth 5.0, Google Chrome, CP311-2H-C679",
+            "asin": "B086MBQKH2",
+            "countReview": 10354,
+            "imgUrl": "https://m.media-amazon.com/images/I/61dsJm45m3L._AC_UY218_.jpg",
+            "price": 195.0,
+            "retailPrice": 289.99,
+            "productRating": "4.5 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/Acer-Chromebook-Convertible-Bluetooth-CP311-2H-C679/dp/B086MBQKH2/ref=sr_1_12?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-12",
+            "series": null,
+            "deliveryMessage": "FREE delivery Tue, Jun 4 Only 5 left in stock - order soon.",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "11.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "32 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "4 GB"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Chrome OS"
+                }
+            ],
+            "salesVolume": "1K+ bought in past month"
+        },
+        {
+            "productDescription": "Nitro V Gaming Laptop | Intel Core i5-13420H Processor | NVIDIA GeForce RTX 4050 Laptop GPU | 15.6\" FHD IPS 144Hz Display | 8GB DDR5 | 512GB Gen 4 SSD | WiFi 6 | Backlit KB | ANV15-51-51H9",
+            "asin": "B0CP8D4SM2",
+            "countReview": 4470,
+            "imgUrl": "https://m.media-amazon.com/images/I/71F-Wcriq4L._AC_UY218_.jpg",
+            "price": 771.83,
+            "retailPrice": 0.0,
+            "productRating": "4.5 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/i5-13420H-Processor-GeForce-Display-ANV15-51-51H9/dp/B0CP8D4SM2/ref=sr_1_13?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-13",
+            "series": null,
+            "deliveryMessage": "FREE delivery Sat, Jun 1 Or fastest delivery Thu, May 30 ",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "512 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "8"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11 Home"
+                }
+            ],
+            "salesVolume": "300+ bought in past month"
+        },
+        {
+            "productDescription": "Aspire 3 Touch Slim Laptop in Blue Ryzen 5 4-Core up to 4.3GHz 8GB RAM 512GB SSD 15.6in FHD Web Cam WiFi HDMI W11 Pen (A315B - Renewed)",
+            "asin": "B0CRWWB5RJ",
+            "countReview": 16,
+            "imgUrl": "https://m.media-amazon.com/images/I/61AT+vKsZ3L._AC_UY218_.jpg",
+            "price": 299.99,
+            "retailPrice": 0.0,
+            "productRating": "4.7 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/acer-Aspire-Laptop-4-Core-4-3GHz/dp/B0CRWWB5RJ/ref=sr_1_14?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-14",
+            "series": null,
+            "deliveryMessage": "FREE delivery Sat, Jun 1 Or fastest delivery Fri, May 31 ",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "512 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "-"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11"
+                }
+            ],
+            "salesVolume": "50+ bought in past month"
+        },
+        {
+            "productDescription": "Aspire Slim Laptop for Business Student, 15.6'' FHD Display, Intel Celeron N Series Processor, 12GB RAM 256GB SSD, WiFi, Webcam, RJ-45, USB Type-A&C, Windows 11, 1-Year Microsoft 365 +Mousepad",
+            "asin": "B0CCY66XNS",
+            "countReview": 50,
+            "imgUrl": "https://m.media-amazon.com/images/I/71f7N-0ZMnL._AC_UY218_.jpg",
+            "price": 299.99,
+            "retailPrice": 0.0,
+            "productRating": "4.2 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/Business-Student-Processor-Microsoft-Mousepad/dp/B0CCY66XNS/ref=sr_1_15?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-15",
+            "series": null,
+            "deliveryMessage": "FREE delivery Sat, Jun 1 Or fastest delivery Fri, May 31 ",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "256 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "12.0 GB"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11 Home"
+                }
+            ],
+            "salesVolume": null
+        },
+        {
+            "productDescription": "Aspire 5 A515-56-32DK Slim Laptop - 15.6\" Full HD IPS Display - 11th Gen Intel i3-1115G4 Dual Core Processor - 4GB DDR4 - 128GB NVMe SSD - WiFi 6 - Amazon Alexa - Windows 11 Home in S mode.",
+            "asin": "B09R5VYRVN",
+            "countReview": 2397,
+            "imgUrl": "https://m.media-amazon.com/images/I/71pvhTrmZDL._AC_UY218_.jpg",
+            "price": 349.99,
+            "retailPrice": 0.0,
+            "productRating": "4.3 out of 5 stars",
+            "prime": true,
+            "dpUrl": "/Acer-A515-56-32DK-Display-i3-1115G4-Processor/dp/B09R5VYRVN/ref=sr_1_16?dib=eyJ2IjoiMSJ9.KVKDmMdxzq0pD6P6YgYQq3-drFidWOzKlfyzC6UEk5f-Iu1EQBB1cc3Q-hoZptlQYE-paLJlF3r0rzlgh3atLSKN2wiJYQ_h7FCK96eOBUl7RoZVMu8kRCb19R1uiBtdlVkON0otpDSebYW3Cw4Nby_FijvVUJ2TS9lSU-KiQkAcBVQLE7quZ32AA2nuh-EKLtdcWmzht4LkmWDbSDzV4pWMBu6yKMABjPRVvqer1h4.v68ujBypo8pYsGWJAdfefrtLkXjkliYZ4CyVKMXdSG4&dib_tag=se&keywords=acer+laptops&qid=1716768494&sr=8-16",
+            "series": null,
+            "deliveryMessage": "FREE delivery Mon, Jun 3 Only 17 left in stock - order soon.",
+            "variations": [],
+            "productDetails": [
+                {
+                    "name": "Display Size",
+                    "value": "15.6 inches"
+                },
+                {
+                    "name": "Disk Size",
+                    "value": "128 GB"
+                },
+                {
+                    "name": "RAM",
+                    "value": "4 GB"
+                },
+                {
+                    "name": "Operating System",
+                    "value": "Windows 11 Home"
+                }
+            ],
+            "salesVolume": null
+        }
+    ],
+    "categories": [
+        "Computers & Tablets",
+        "Traditional Laptop Computers",
+        "2 in 1 Laptop Computers"
+    ],
+    "starFilterParam": {
+        "4 Stars & Up": "n:172282,p_72:1248879011"
+    },
+    "similarKeywords": [
+        {
+            "keyword": "acer laptop",
+            "url": "/s/?k=acer+laptop&ref=sugsr_0&pd_rd_w=vqQoW&content-id=amzn1.sym.3e23f907-b859-4094-8b45-cf96f8c9286b:amzn1.sym.3e23f907-b859-4094-8b45-cf96f8c9286b&pf_rd_p=3e23f907-b859-4094-8b45-cf96f8c9286b&pf_rd_r=FKT63GX6J2KN7DQ8T4RY&pd_rd_wg=Nv3GO&pd_rd_r=2ffb7628-c88d-4f8d-9796-9ea63e972a39&qid=1716768494"
+        },
+        {
+            "keyword": "lenovo laptop",
+            "url": "/s/?k=lenovo+laptop&ref=sugsr_3&pd_rd_w=vqQoW&content-id=amzn1.sym.3e23f907-b859-4094-8b45-cf96f8c9286b:amzn1.sym.3e23f907-b859-4094-8b45-cf96f8c9286b&pf_rd_p=3e23f907-b859-4094-8b45-cf96f8c9286b&pf_rd_r=FKT63GX6J2KN7DQ8T4RY&pd_rd_wg=Nv3GO&pd_rd_r=2ffb7628-c88d-4f8d-9796-9ea63e972a39&qid=1716768494"
+        },
+        {
+            "keyword": "laptop",
+            "url": "/s/?k=laptop&ref=sugsr_1&pd_rd_w=vqQoW&content-id=amzn1.sym.3e23f907-b859-4094-8b45-cf96f8c9286b:amzn1.sym.3e23f907-b859-4094-8b45-cf96f8c9286b&pf_rd_p=3e23f907-b859-4094-8b45-cf96f8c9286b&pf_rd_r=FKT63GX6J2KN7DQ8T4RY&pd_rd_wg=Nv3GO&pd_rd_r=2ffb7628-c88d-4f8d-9796-9ea63e972a39&qid=1716768494"
+        },
+        {
+            "keyword": "laptop on sale clearance",
+            "url": "/s/?k=laptop+on+sale+clearance&ref=sugsr_4&pd_rd_w=vqQoW&content-id=amzn1.sym.3e23f907-b859-4094-8b45-cf96f8c9286b:amzn1.sym.3e23f907-b859-4094-8b45-cf96f8c9286b&pf_rd_p=3e23f907-b859-4094-8b45-cf96f8c9286b&pf_rd_r=FKT63GX6J2KN7DQ8T4RY&pd_rd_wg=Nv3GO&pd_rd_r=2ffb7628-c88d-4f8d-9796-9ea63e972a39&qid=1716768494"
+        },
+        {
+            "keyword": "asus laptop",
+            "url": "/s/?k=asus+laptop&ref=sugsr_2&pd_rd_w=vqQoW&content-id=amzn1.sym.3e23f907-b859-4094-8b45-cf96f8c9286b:amzn1.sym.3e23f907-b859-4094-8b45-cf96f8c9286b&pf_rd_p=3e23f907-b859-4094-8b45-cf96f8c9286b&pf_rd_r=FKT63GX6J2KN7DQ8T4RY&pd_rd_wg=Nv3GO&pd_rd_r=2ffb7628-c88d-4f8d-9796-9ea63e972a39&qid=1716768494"
+        },
+        {
+            "keyword": "laptop computer",
+            "url": "/s/?k=laptop+computer&ref=sugsr_5&pd_rd_w=vqQoW&content-id=amzn1.sym.3e23f907-b859-4094-8b45-cf96f8c9286b:amzn1.sym.3e23f907-b859-4094-8b45-cf96f8c9286b&pf_rd_p=3e23f907-b859-4094-8b45-cf96f8c9286b&pf_rd_r=FKT63GX6J2KN7DQ8T4RY&pd_rd_wg=Nv3GO&pd_rd_r=2ffb7628-c88d-4f8d-9796-9ea63e972a39&qid=1716768494"
+        }
+    ]
+}
