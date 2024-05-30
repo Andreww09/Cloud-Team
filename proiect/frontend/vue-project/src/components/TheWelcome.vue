@@ -115,7 +115,11 @@ auth.onAuthStateChanged((loggedInUser) => {
 // Fetch search history for the logged-in user
 const fetchSearchHistory = async (userId) => {
   try {
-    const response = await axios.get(`http://localhost:5000/get-history?uid=${userId}`)
+    const response = await axios.get(`http://127.0.0.1:5000/get-history`, {
+      params: {
+        uid: userId
+      }
+    })
     searchHistory.value = response.data
   } catch (error) {
     console.error('Error fetching search history:', error)
