@@ -65,6 +65,25 @@
         </div>
       </section>
 
+    <section v-if="additionalProductInfo.rating || additionalProductInfo.reviews.length > 0" class="search-section">
+      <h2 style="color: #333;">Additional Product Information</h2>
+      <div class="additional-info">
+        <div v-if="additionalProductInfo.rating" class="rating-info">
+          <h3 style="color: #333;">Rating</h3>
+          <p style="color: #333;">{{ additionalProductInfo.rating }}</p>
+        </div>
+        <div v-if="additionalProductInfo.reviews.length > 0" class="reviews-info">
+          <h3 style="color: #333;">Reviews</h3>
+          <ul>
+            <li v-for="(review, index) in additionalProductInfo.reviews" :key="index">
+              <p style="color: #333;">{{ review.sentence }}</p>
+              <p style="color: #333;">Sentiment: {{ review.sentiment }}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
       <section class="search-section" v-if="user">
         <h2 style="color: #333;">Search History</h2>
           <div class="search-history">
@@ -99,6 +118,7 @@ const products = ref([])
 const lowestPriceProduct = ref(null)
 const lowestPriceProvider = ref(null)
 const searchHistory = ref([])
+const additionalProductInfo = ref({ rating: null, reviews: [] })
 
 // Listen for authentication state changes
 auth.onAuthStateChanged((loggedInUser) => {
@@ -115,11 +135,7 @@ auth.onAuthStateChanged((loggedInUser) => {
 // Fetch search history for the logged-in user
 const fetchSearchHistory = async (userId) => {
   try {
-    const response = await axios.get(`http://127.0.0.1:5000/get-history`, {
-      params: {
-        uid: userId
-      }
-    })
+    const response = await axios.get(`http://localhost:5000/get-history?uid=${userId}`)
     searchHistory.value = response.data
   } catch (error) {
     console.error('Error fetching search history:', error)
@@ -156,6 +172,23 @@ const register = async () => {
   }
 }
 
+// Function to fetch additional product info by ASIN
+const fetchAdditionalProductInfo = async (asin) => {
+  try {
+    const response = await axios.get('http://127.0.0.1:5000/lookup-product', {
+      params: {
+        asin: asin
+      }
+    })
+    const { rating, reviews } = response.data
+    additionalProductInfo.value = { rating, reviews }
+  } catch (error) {
+    console.error('Error fetching additional product info:', error)
+    additionalProductInfo.value = { rating: null, reviews: [] }
+  }
+}
+
+
 // Function to search products by keyword
 const searchByKeyword = async () => {
   try {
@@ -188,6 +221,7 @@ const searchByName = async () => {
     if (searchResults.length > 0) {
       lowestPriceProduct.value = searchResults[0]
       await searchLowestPriceByAsin(lowestPriceProduct.value.asin)
+      await fetchAdditionalProductInfo(asin)
     } else {
       lowestPriceProduct.value = null
       lowestPriceProvider.value = null
@@ -232,6 +266,7 @@ const handleProductClickAndUpdateView = async (asin) => {
       products.value = [productDetails[0]]; // Set products to an array containing only the clicked product
       lowestPriceProduct.value = productDetails[0];
       await searchLowestPriceByAsin(asin);
+      await fetchAdditionalProductInfo(asin);
       // Clear lowestPriceProduct and lowestPriceProvider values
       lowestPriceProduct.value = null;
       lowestPriceProvider.value = null;
@@ -353,6 +388,30 @@ main {
 
 .search-form button:hover {
   background-color: #0056b3;
+}
+
+.additional-info {
+  margin-top: 20px;
+}
+
+.rating-info,
+.reviews-info {
+  margin-bottom: 20px;
+}
+
+.rating-info h3,
+.reviews-info h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.reviews-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.reviews-info li {
+  margin-bottom: 10px;
 }
 
 .results ul {
