@@ -209,7 +209,7 @@ const fetchAdditionalProductInfo = async (asin) => {
   try {
     const response = await axios.get('http://127.0.0.1:5000/lookup-product', {
       params: {
-        url: 'https://www.amazon.com/dp/${asin}'
+        url: `https://www.amazon.com/dp/${asin}`
       }
     })
     const { rating, reviews, score } = response.data
