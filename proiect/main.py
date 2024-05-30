@@ -37,6 +37,7 @@ def add_search_entry(uid, search_term):
 
 
 # Function to retrieve search history for a user
+@app.route('/get-history', methods=['GET'])
 def get_search_history(uid):
     user_ref = db.collection('users').document(uid)
     search_history_ref = user_ref.collection('search_history')

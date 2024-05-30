@@ -1,12 +1,94 @@
+<template>
+  <div class="container">
+    <header>
+      <h1 class="title">Product Search</h1>
+      <div v-if="user" class="user-info">
+        <p>Logged in as: {{ user.email }}</p>
+        <button @click="logout" class="logout-btn">Logout</button>
+      </div>
+      <div v-else>
+        <button @click="login" class="login-btn">Login with Google</button>
+      </div>
+    </header>
+    <main>
+      <div v-if="!user" class="registration-form">
+        <h2>Register</h2>
+        <input v-model="email" type="email" placeholder="Email" class="input-field" />
+        <input v-model="password" type="password" placeholder="Password" class="input-field" />
+        <button @click="register" class="register-btn">Register</button>
+      </div>
+      <section class="search-section">
+        <h2 style="color: #333;">Search by Keyword</h2>
+        <div class="search-form">
+          <input v-model="keyword" placeholder="Enter keyword" />
+          <select v-model="sortedBy" style="color: #333;">
+            <option value="price">Price</option>
+            <option value="rating">Rating</option>
+          </select>
+          <select v-model="order" style="color: #333;">
+            <option value="ascending">Ascending</option>
+            <option value="descending">Descending</option>
+          </select>
+          <input v-model="minPrice" type="number" placeholder="Min price" style="color: #333;" />
+          <input v-model="maxPrice" type="number" placeholder="Max price" style="color: #333;" />
+          <button @click="searchByKeyword" style="background-color: #007bff; color: white;">Search</button>
+        </div>
+        <div v-if="products.length > 0" class="results">
+          <h3 style="color: #333;">Search Results</h3>
+          <ul>
+            <li v-for="product in products" :key="product.asin" @click="handleProductClickAndUpdateView(product.asin)">
+              <img :src="product.image" alt="Product Image" />
+              <div class="product-info">
+                <p style="color: #333;">{{ product.desciption }}</p>
+                <p style="color: #333;">Price: ${{ product.price }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="search-section">
+        <h2 style="color: #333;">Search by Product Name</h2>
+        <div class="search-form">
+          <input v-model="productName" placeholder="Enter product name" style="color: #333;" />
+          <button @click="searchByName" style="background-color: #007bff; color: white;">Search</button>
+        </div>
+        <div v-if="lowestPriceProduct" class="product-details">
+          <h3 style="color: #333;">Product Details</h3>
+          <img :src="lowestPriceProduct.image" alt="Product Image" />
+          <p style="color: #333;">{{ lowestPriceProduct.desciption }}</p>
+        </div>
+        <div v-if="lowestPriceProvider" class="provider-details">
+          <h3 style="color: #333;">Lowest Price Provider</h3>
+          <p style="color: #333;">Seller: {{ lowestPriceProvider.sellerName }}</p>
+          <p style="color: #333;">Price: ${{ lowestPriceProvider.price }}</p>
+        </div>
+      </section>
+
+      <section class="search-section" v-if="user">
+        <h2 style="color: #333;">Search History</h2>
+          <div class="search-history">
+            <ul>
+              <li v-for="entry in searchHistory" :key="entry.timestamp">
+                <p>{{ entry.search_term }}</p>
+                <p>{{ entry.timestamp }}</p>
+              </li>
+            </ul>
+          </div>
+      </section>
+    </main>
+  </div>
+</template>
+
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
-import { auth, provider, signInWithPopup, signOut } from '../firebase'
-import WelcomeItem from './WelcomeItem.vue'
-import DocumentationIcon from './icons/IconDocumentation.vue'
-import CommunityIcon from './icons/IconCommunity.vue'
+import { auth, provider, signInWithPopup, createUserWithEmailAndPassword, signOut } from '../firebase.js'
 
 // State management
+const user = ref(null)
+const email = ref('')
+const password = ref('')
 const keyword = ref('')
 const productName = ref('')
 const sortedBy = ref('price')
@@ -14,10 +96,61 @@ const order = ref('ascending')
 const minPrice = ref('')
 const maxPrice = ref('')
 const products = ref([])
+const lowestPriceProduct = ref(null)
 const lowestPriceProvider = ref(null)
 const searchHistory = ref([])
-const user = ref(null)
-const token = ref(null)
+
+// Listen for authentication state changes
+auth.onAuthStateChanged((loggedInUser) => {
+  user.value = loggedInUser
+  if (loggedInUser) {
+    // Fetch search history if user is logged in
+    fetchSearchHistory(loggedInUser.uid)
+  } else {
+    // Clear search history if user logs out
+    searchHistory.value = []
+  }
+})
+
+// Fetch search history for the logged-in user
+const fetchSearchHistory = async (userId) => {
+  try {
+    const response = await axios.get(`http://localhost:5000/get-history?uid=${userId}`)
+    searchHistory.value = response.data
+  } catch (error) {
+    console.error('Error fetching search history:', error)
+  }
+}
+
+// Login function using Google authentication provider
+const login = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider)
+    user.value = result.user
+  } catch (error) {
+    console.error('Error logging in:', error)
+  }
+}
+
+// Logout function
+const logout = async () => {
+  try {
+    await signOut(auth)
+    user.value = null
+  } catch (error) {
+    console.error('Error logging out:', error)
+  }
+}
+
+// Registration function
+const register = async () => {
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email.value, password.value)
+    user.value = result.user
+  } catch (error) {
+    console.error('Error registering user:', error)
+  }
+}
 
 // Function to search products by keyword
 const searchByKeyword = async () => {
@@ -29,10 +162,11 @@ const searchByKeyword = async () => {
         order: order.value,
         minPrice: minPrice.value,
         maxPrice: maxPrice.value
-      },
-      headers: { Authorization: `Bearer ${token.value}` }
+      }
     })
     products.value = response.data
+    lowestPriceProduct.value = null
+    lowestPriceProvider.value = null
   } catch (error) {
     console.error('Error searching products by keyword:', error)
   }
@@ -41,20 +175,22 @@ const searchByKeyword = async () => {
 // Function to search for the lowest price offer by product name
 const searchByName = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:5000/lookup-seller-prices', {
+    const response = await axios.get('http://127.0.0.1:5000/search-by-keyword', {
       params: {
-        url: productName.value,
-        sortedBy: 'price',
-        order: 'ascending'
-      },
-      headers: { Authorization: `Bearer ${token.value}` }
+        keyword: productName.value
+      }
     })
-    const offers = response.data
-    if (offers.length > 0) {
-      lowestPriceProvider.value = offers.sort((a, b) => a.price - b.price)[0]
+    const searchResults = response.data
+    if (searchResults.length > 0) {
+      lowestPriceProduct.value = searchResults[0]
+      await searchLowestPriceByAsin(lowestPriceProduct.value.asin)
+    } else {
+      lowestPriceProduct.value = null
+      lowestPriceProvider.value = null
     }
+    products.value = []
   } catch (error) {
-    console.error('Error fetching product prices:', error)
+    console.error('Error fetching product by name:', error)
   }
 }
 
@@ -66,131 +202,199 @@ const searchLowestPriceByAsin = async (asin) => {
         url: `https://www.amazon.com/dp/${asin}`,
         sortedBy: 'price',
         order: 'ascending'
-      },
-      headers: { Authorization: `Bearer ${token.value}` }
+      }
     })
     const offers = response.data
     if (offers.length > 0) {
       lowestPriceProvider.value = offers.sort((a, b) => a.price - b.price)[0]
+    } else {
+      lowestPriceProvider.value = null
     }
   } catch (error) {
     console.error('Error fetching product prices by ASIN:', error)
   }
 }
 
-// Function to handle Google login
-const handleGoogleLogin = async () => {
+// Function to handle product click and update view
+const handleProductClickAndUpdateView = async (asin) => {
   try {
-    const result = await signInWithPopup(auth, provider)
-    user.value = result.user
-    token.value = await user.value.getIdToken()
-    fetchSearchHistory()
-  } catch (error) {
-    console.error('Error during Google login:', error)
-  }
-}
-
-// Function to handle logout
-const handleLogout = async () => {
-  try {
-    await signOut(auth)
-    user.value = null
-    token.value = null
-    searchHistory.value = []
-  } catch (error) {
-    console.error('Error during logout:', error)
-  }
-}
-
-// Fetch search history after login
-const fetchSearchHistory = async () => {
-  try {
-    const response = await axios.get('http://127.0.0.1:5000/search-history', {
-      headers: { Authorization: `Bearer ${token.value}` }
+    const response = await axios.get('http://127.0.0.1:5000/search-by-keyword', {
+      params: {
+        keyword: asin
+      }
     })
-    searchHistory.value = response.data
+    const productDetails = response.data
+    if (productDetails.length > 0) {
+      products.value = [productDetails[0]]; // Set products to an array containing only the clicked product
+      lowestPriceProduct.value = productDetails[0];
+      await searchLowestPriceByAsin(asin);
+      // Clear lowestPriceProduct and lowestPriceProvider values
+      lowestPriceProduct.value = null;
+      lowestPriceProvider.value = null;
+    } else {
+      lowestPriceProduct.value = null;
+      lowestPriceProvider.value = null;
+    }
+    productName.value = ""; // Clear productName
   } catch (error) {
-    console.error('Error fetching search history:', error)
+    console.error('Error handling product click and updating view:', error)
   }
 }
 
-// Initialize Firebase Auth
-auth.onAuthStateChanged(async (currentUser) => {
-  if (currentUser) {
-    user.value = currentUser
-    token.value = await currentUser.getIdToken()
-    fetchSearchHistory()
-  } else {
-    user.value = null
-    token.value = null
-    searchHistory.value = []
-  }
-})
 </script>
 
-<template>
-  <div>
-    <WelcomeItem>
-      <template #icon>
-        <DocumentationIcon />
-      </template>
-      <template #heading>Search by Keyword</template>
-      <input v-model="keyword" placeholder="Enter keyword" />
-      <select v-model="sortedBy">
-        <option value="price">Price</option>
-        <option value="rating">Rating</option>
-      </select>
-      <select v-model="order">
-        <option value="ascending">Ascending</option>
-        <option value="descending">Descending</option>
-      </select>
-      <input v-model="minPrice" type="number" placeholder="Min price" />
-      <input v-model="maxPrice" type="number" placeholder="Max price" />
-      <button @click="searchByKeyword">Search</button>
-      <div v-if="products.length > 0">
-        <h3>Search Results</h3>
-        <ul>
-          <li v-for="product in products" :key="product.asin" @click="searchLowestPriceByAsin(product.asin)">
-            <img :src="product.image" alt="Product Image" />
-            <p>{{ product.description }}</p>
-            <p>Price: ${{ product.price }}</p>
-          </li>
-        </ul>
-      </div>
-    </WelcomeItem>
+<style scoped>
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
 
-    <WelcomeItem>
-      <template #icon>
-        <CommunityIcon />
-      </template>
-      <template #heading>Search by Product Name</template>
-      <input v-model="productName" placeholder="Enter product name" />
-      <input v-model="minPrice" type="number" placeholder="Min price" />
-      <input v-model="maxPrice" type="number" placeholder="Max price" />
-      <button @click="searchByName">Search</button>
-      <div v-if="lowestPriceProvider">
-        <p>Lowest Price Provider:</p>
-        <p>Seller: {{ lowestPriceProvider.sellerName }}</p>
-        <p>Price: ${{ lowestPriceProvider.price }}</p>
-      </div>
-    </WelcomeItem>
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    <WelcomeItem>
-      <template #icon>
-        <CommunityIcon />
-      </template>
-      <template #heading>Login</template>
-      <button v-if="!user" @click="handleGoogleLogin">Login with Google</button>
-      <button v-if="user" @click="handleLogout">Logout</button>
-      <div v-if="user">
-        <p>Welcome, {{ user.displayName }}</p>
-      </div>
-      <div v-if="searchHistory.length > 0">
-        <h3>Search History</h3>
-        <ul>
-          <li v-for="item in searchHistory" :key="item.id">{{ item.productName }}</li>
-        </ul>
-      </div>
-    </WelcomeItem>
-  </div>
-</template>
+h1 {
+  font-size: 2rem;
+  color: '#333';
+}
+
+.user-info p {
+  margin-bottom: 10px;
+}
+
+.login-btn,
+.logout-btn,
+.register-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: white;
+}
+
+.login-btn {
+  background-color: #007bff;
+}
+
+.logout-btn {
+  background-color: #dc3545;
+}
+
+.register-btn {
+  background-color: #007bff;
+}
+
+.input-field {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.registration-form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.registration-form h2 {
+  margin-bottom: 10px;
+}
+
+.registration-form button {
+  width: 100%;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.search-section {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.search-form input,
+.search-form select,
+.search-form button {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.search-form button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.search-form button:hover {
+  background-color: #0056b3;
+}
+
+.results ul {
+  list-style: none;
+  padding: 0;
+}
+
+.results li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.results li:hover {
+  background-color: #f0f0f0;
+}
+
+.results img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.product-info {
+  flex-grow: 1;
+}
+
+.product-details img,
+.provider-details img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Color adjustments for text */
+h1, h2, h3, p, input, select {
+  color: #333;
+}
+
+.title{
+  color: #e5e1e1;
+}
+</style>
