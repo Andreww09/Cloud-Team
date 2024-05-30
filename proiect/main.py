@@ -123,7 +123,7 @@ def sentiment_analysis(text):
 
 @app.route('/lookup-product', methods=['GET'])
 def look_up_product():
-    product_url = request.args.get('url')
+    product_url = request.args.get('asin')
     if not product_url:
         return jsonify({"error": "Product URL is required"}), 400
     url = "https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product"
