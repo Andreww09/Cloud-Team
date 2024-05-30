@@ -4,7 +4,7 @@ import os
 import firebase_admin
 from dotenv import load_dotenv
 from firebase_admin import credentials, firestore
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, abort
 from dotenv import load_dotenv
 import os
 import requests
@@ -37,7 +37,10 @@ def add_search_entry(uid, search_term):
 
 # Function to retrieve search history for a user
 @app.route('/get-history', methods=['GET'])
-def get_search_history(uid):
+def get_search_history():
+    uid = request.args.get('uid')
+    if not uid:
+        return jsonify({"error": "User id is required"}), 404
     user_ref = db.collection('users').document(uid)
     search_history_ref = user_ref.collection('search_history')
 
@@ -99,9 +102,6 @@ def extract_asin(url):
 def sentiment_analysis(text):
     client = language_v1.LanguageServiceClient()
 
-    # Text to analyze
-    text = "I love the new movie, it's fantastic!"
-
     # Analyze sentiment
     document = {"content": text, "type": language_v1.Document.Type.PLAIN_TEXT}
     response = client.analyze_sentiment(request={'document': document})
@@ -123,21 +123,29 @@ def sentiment_analysis(text):
 
 @app.route('/lookup-product', methods=['GET'])
 def look_up_product():
-    product_url = request.args.get('asin')
+    product_url = request.args.get('url')
     if not product_url:
         return jsonify({"error": "Product URL is required"}), 400
+
     url = "https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product"
     asin = extract_asin(product_url)
     new_url = f"amazon.com/dp/{asin}"
+
+    uid = request.args.get('uid')
+    if uid:
+        add_search_entry(uid, new_url)
+
     querystring = {"url": new_url}
 
     headers = {
         "X-RapidAPI-Key": str(os.environ.get('AXESSO_API_KEY')),
         "X-RapidAPI-Host": str(os.environ.get('AXESSO_HOST')),
     }
+    # response={'responseStatus': "a"}
 
     # response = requests.get(url, headers=headers, params=querystring)
-
+    # if response['responseStatus'] is None or response['responseStatus'] != 'PRODUCT_FOUND_RESPONSE':
+    #     abort(404)
     # data = response.json()
     # write_to_json(data, 'loop_up_product.json')
 
@@ -178,7 +186,6 @@ def look_up_seller_prices():
     min_price = request.args.get('minPrice')
     max_price = request.args.get('maxPrice')
     order = request.args.get('order')
-    print(asin)
 
     url = "https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/v2/amz/amazon-lookup-prices"
 
@@ -191,6 +198,9 @@ def look_up_seller_prices():
 
     # response = requests.get(url, headers=headers, params=querystring)
     #
+    # response = requests.get(url, headers=headers, params=querystring)
+    # if response['responseStatus'] is None or response['responseStatus'] != 'PRODUCT_FOUND_RESPONSE':
+    #     abort(404)
     # data = response.json()
     # write_to_json(data, 'loop_up_seller_prices.json')
 
@@ -226,6 +236,15 @@ def search_by_keyword():
     keyword = request.args.get('keyword')
     if not keyword:
         return jsonify({"error": "keyword is required"}), 400
+
+    uid = request.args.get('uid')
+    if uid:
+        add_search_entry(uid, keyword)
+
+    min_price = request.args.get('minPrice')
+    max_price = request.args.get('maxPrice')
+    order = request.args.get('order')
+
     url = "https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-search-by-keyword-asin"
 
     querystring = {"domainCode": "com", "keyword": keyword, "page": "1", "excludeSponsored": "false",
@@ -238,6 +257,9 @@ def search_by_keyword():
 
     # response = requests.get(url, headers=headers, params=querystring)
     #
+    # response = requests.get(url, headers=headers, params=querystring)
+    # if response['responseStatus'] is None or response['responseStatus'] != 'PRODUCT_FOUND_RESPONSE':
+    #     abort(404)
     # data = response.json()
     # write_to_json(data, 'search_by_keyword.json')
 
@@ -250,7 +272,17 @@ def search_by_keyword():
             "asin": product['asin'],
             "price": product['price']
         }
+        if min_price and info['price'] < float(min_price):
+            continue
+        if max_price and info['price'] > float(max_price):
+            continue
         products.append(info)
+
+    ascending = True
+    if order == "descending":
+        ascending = False
+    products = sort_offers_by_price(products, ascending)
+
     return jsonify(products)
 
 
