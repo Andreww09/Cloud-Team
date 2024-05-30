@@ -21,10 +21,6 @@
         <h2 style="color: #333;">Search by Keyword</h2>
         <div class="search-form">
           <input v-model="keyword" placeholder="Enter keyword" />
-          <select v-model="sortedBy" style="color: #333;">
-            <option value="price">Price</option>
-            <option value="rating">Rating</option>
-          </select>
           <select v-model="order" style="color: #333;">
             <option value="ascending">Ascending</option>
             <option value="descending">Descending</option>
@@ -42,6 +38,33 @@
                 <p style="color: #333;">{{ product.desciption }}</p>
                 <p style="color: #333;">Price: ${{ product.price }}</p>
               </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="search-section">
+        <h2 style="color: #333;">Search by URL</h2>
+        <div class="search-form">
+          <input v-model="productURL" placeholder="Enter product URL" style="color: #333;" />
+          <select v-model="sortedBy" style="color: #333;">
+            <option value="price">Price</option>
+            <option value="sellerRating">Seller Rating</option>
+          </select>
+          <select v-model="order" style="color: #333;">
+            <option value="ascending">Ascending</option>
+            <option value="descending">Descending</option>
+          </select>
+          <input v-model="minPrice" type="number" placeholder="Min price" style="color: #333;" />
+          <input v-model="maxPrice" type="number" placeholder="Max price" style="color: #333;" />
+          <button @click="searchByURL" style="background-color: #007bff; color: white;">Search</button>
+        </div>
+        <div v-if="sellerPrices.length > 0" class="results">
+          <h3 style="color: #333;">Search Results</h3>
+          <ul>
+            <li v-for="sellerPrice in sellerPrices" :key="sellerPrice.sellerId">
+              <p style="color: #333;">Seller: {{ sellerPrice.sellerName }}</p>
+              <p style="color: #333;">Price: ${{ sellerPrice.price }}</p>
             </li>
           </ul>
         </div>
@@ -71,6 +94,8 @@
         <div v-if="additionalProductInfo.rating" class="rating-info">
           <h3 style="color: #333;">Rating</h3>
           <p style="color: #333;">{{ additionalProductInfo.rating }}</p>
+          <h3 style="color: #333;">Overall score</h3>
+          <p style="color: #333;">{{ additionalProductInfo.score }}</p>
         </div>
         <div v-if="additionalProductInfo.reviews.length > 0" class="reviews-info">
           <h3 style="color: #333;">Reviews</h3>
@@ -118,7 +143,9 @@ const products = ref([])
 const lowestPriceProduct = ref(null)
 const lowestPriceProvider = ref(null)
 const searchHistory = ref([])
-const additionalProductInfo = ref({ rating: null, reviews: [] })
+const additionalProductInfo = ref({ rating: null, reviews: [], score: null })
+const sellerPrices = ref([])
+const productURL = ref('')
 
 // Listen for authentication state changes
 auth.onAuthStateChanged((loggedInUser) => {
@@ -177,11 +204,11 @@ const fetchAdditionalProductInfo = async (asin) => {
   try {
     const response = await axios.get('http://127.0.0.1:5000/lookup-product', {
       params: {
-        asin: asin
+        url: 'https://www.amazon.com/dp/${asin}'
       }
     })
-    const { rating, reviews } = response.data
-    additionalProductInfo.value = { rating, reviews }
+    const { rating, reviews, score } = response.data
+    additionalProductInfo.value = { rating, reviews, score }
   } catch (error) {
     console.error('Error fetching additional product info:', error)
     additionalProductInfo.value = { rating: null, reviews: [] }
@@ -195,7 +222,6 @@ const searchByKeyword = async () => {
     const response = await axios.get('http://127.0.0.1:5000/search-by-keyword', {
       params: {
         keyword: keyword.value,
-        sortedBy: sortedBy.value,
         order: order.value,
         minPrice: minPrice.value,
         maxPrice: maxPrice.value
@@ -221,7 +247,7 @@ const searchByName = async () => {
     if (searchResults.length > 0) {
       lowestPriceProduct.value = searchResults[0]
       await searchLowestPriceByAsin(lowestPriceProduct.value.asin)
-      await fetchAdditionalProductInfo(asin)
+      await fetchAdditionalProductInfo(lowestPriceProduct.value.asin)
     } else {
       lowestPriceProduct.value = null
       lowestPriceProvider.value = null
@@ -277,6 +303,26 @@ const handleProductClickAndUpdateView = async (asin) => {
     productName.value = ""; // Clear productName
   } catch (error) {
     console.error('Error handling product click and updating view:', error)
+  }
+}
+
+const searchByURL = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:5000/lookup-seller-prices', {
+      params: {
+        url: productURL.value,
+        sortedBy: sortedBy.value,
+        order: order.value,
+        minPrice: minPrice.value,
+        maxPrice: maxPrice.value
+      }
+    })
+    const index = productURL.value.indexOf("dp/") + "dp/".length;
+    const substring = productURL.value.substring(index);
+    await fetchAdditionalProductInfo(substring)
+    sellerPrices.value = response.data
+  } catch (error) {
+    console.error('Error searching by URL:', error)
   }
 }
 
