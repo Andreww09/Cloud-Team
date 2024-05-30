@@ -21,7 +21,6 @@ firebase_admin.initialize_app(cred)
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "final-project-424823-cd4d491fbb3c.json"
 
-
 # Initialize Firestore DB
 db = firestore.client()
 
@@ -106,10 +105,20 @@ def sentiment_analysis(text):
     # Analyze sentiment
     document = {"content": text, "type": language_v1.Document.Type.PLAIN_TEXT}
     response = client.analyze_sentiment(request={'document': document})
-
     # Get sentiment score and magnitude
     sentiment = response.document_sentiment
-    return sentiment
+    reviews = []
+    for sentence in response.sentences:
+        review = {
+            'sentence': sentence.text.content,
+            'sentiment': sentence.sentiment.score
+        }
+        reviews.append(review)
+    response = {
+        'sentiment': sentiment,
+        'reviews': reviews
+    }
+    return response
 
 
 @app.route('/lookup-product', methods=['GET'])
@@ -142,10 +151,10 @@ def look_up_product():
         rating_count += 1
     #     print(review['text'])
     # print(reviews_text)
-    sentiment = sentiment_analysis(reviews_text)
+    analysis = sentiment_analysis(reviews_text)
     response = {
-        'score': sentiment.score,
-        'magnitude': sentiment.magnitude,
+        'score': analysis['sentiment'].score,
+        'reviews': analysis['reviews'],
         'rating': rating / rating_count
     }
     return jsonify(response)
