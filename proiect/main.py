@@ -1,15 +1,53 @@
 import json
 import os
+
+import firebase_admin
 from dotenv import load_dotenv
+from firebase_admin import credentials, firestore
 from flask import Flask, request, jsonify, make_response
 from dotenv import load_dotenv
 import os
 import requests
 from flask_cors import CORS
+from google.cloud import language_v1
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 load_dotenv()
+
+# Initialize Firebase Admin SDK
+cred = credentials.Certificate("final-project-424823-firebase-adminsdk-2k6qj-36f71e5bb1.json")
+firebase_admin.initialize_app(cred)
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "final-project-424823-cd4d491fbb3c.json"
+
+
+# Initialize Firestore DB
+db = firestore.client()
+
+
+def add_search_entry(uid, search_term):
+    user_ref = db.collection('users').document(uid)
+    search_history_ref = user_ref.collection('search_history')
+
+    search_history_ref.add({
+        'search_term': search_term,
+        'timestamp': firestore.SERVER_TIMESTAMP
+    })
+
+
+# Function to retrieve search history for a user
+def get_search_history(uid):
+    user_ref = db.collection('users').document(uid)
+    search_history_ref = user_ref.collection('search_history')
+
+    search_entries = search_history_ref.order_by('timestamp', direction=firestore.Query.DESCENDING).stream()
+
+    response = []
+    for entry in search_entries:
+        response.append(entry.to_dict())
+        # print(f'{entry.id} => {entry.to_dict()}')
+    return jsonify(response)
 
 
 def write_to_json(data, file_name):
@@ -58,6 +96,21 @@ def extract_asin(url):
 #     return response
 
 
+def sentiment_analysis(text):
+    client = language_v1.LanguageServiceClient()
+
+    # Text to analyze
+    text = "I love the new movie, it's fantastic!"
+
+    # Analyze sentiment
+    document = {"content": text, "type": language_v1.Document.Type.PLAIN_TEXT}
+    response = client.analyze_sentiment(request={'document': document})
+
+    # Get sentiment score and magnitude
+    sentiment = response.document_sentiment
+    return sentiment
+
+
 @app.route('/lookup-product', methods=['GET'])
 def look_up_product():
     product_url = request.args.get('url')
@@ -88,8 +141,10 @@ def look_up_product():
         rating_count += 1
     #     print(review['text'])
     # print(reviews_text)
+    sentiment = sentiment_analysis(reviews_text)
     response = {
-        'text': reviews_text,
+        'score': sentiment.score,
+        'magnitude': sentiment.magnitude,
         'rating': rating / rating_count
     }
     return jsonify(response)
@@ -191,3 +246,11 @@ def search_by_keyword():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    # user_id = 'example_uid'
+
+    # Add search entries
+    # add_search_entry(user_id, 'python firestore tutorial')
+    # add_search_entry(user_id, 'firebase admin sdk python')
+    #
+    # # Retrieve and print search history
+    # get_search_history(user_id)
