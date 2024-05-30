@@ -65,6 +65,7 @@
             <li v-for="sellerPrice in sellerPrices" :key="sellerPrice.sellerId">
               <p style="color: #333;">Seller: {{ sellerPrice.sellerName }}</p>
               <p style="color: #333;">Price: ${{ sellerPrice.price }}</p>
+              <p style="color: #333;">Rating: ${{ sellerPrice.sellerRating }}/5</p>
             </li>
           </ul>
         </div>
@@ -93,7 +94,7 @@
       <div class="additional-info">
         <div v-if="additionalProductInfo.rating" class="rating-info">
           <h3 style="color: #333;">Rating</h3>
-          <p style="color: #333;">{{ additionalProductInfo.rating }}</p>
+          <p style="color: #333;">{{ additionalProductInfo.rating }}/5</p>
           <h3 style="color: #333;">Overall score</h3>
           <p style="color: #333;">{{ additionalProductInfo.score }}</p>
         </div>
@@ -224,7 +225,8 @@ const searchByKeyword = async () => {
         keyword: keyword.value,
         order: order.value,
         minPrice: minPrice.value,
-        maxPrice: maxPrice.value
+        maxPrice: maxPrice.value,
+        uid: user.value.uid
       }
     })
     products.value = response.data
@@ -240,7 +242,8 @@ const searchByName = async () => {
   try {
     const response = await axios.get('http://127.0.0.1:5000/search-by-keyword', {
       params: {
-        keyword: productName.value
+        keyword: productName.value,
+        uid: user.value.uid
       }
     })
     const searchResults = response.data
@@ -265,7 +268,8 @@ const searchLowestPriceByAsin = async (asin) => {
       params: {
         url: `https://www.amazon.com/dp/${asin}`,
         sortedBy: 'price',
-        order: 'ascending'
+        order: 'ascending',
+        uid: user.value.uid
       }
     })
     const offers = response.data
@@ -284,7 +288,8 @@ const handleProductClickAndUpdateView = async (asin) => {
   try {
     const response = await axios.get('http://127.0.0.1:5000/search-by-keyword', {
       params: {
-        keyword: asin
+        keyword: asin,
+        uid: user.value.uid
       }
     })
     const productDetails = response.data
@@ -314,7 +319,8 @@ const searchByURL = async () => {
         sortedBy: sortedBy.value,
         order: order.value,
         minPrice: minPrice.value,
-        maxPrice: maxPrice.value
+        maxPrice: maxPrice.value,
+        uid: user.value.uid
       }
     })
     const index = productURL.value.indexOf("dp/") + "dp/".length;
