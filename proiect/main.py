@@ -124,13 +124,14 @@ def sentiment_analysis(text):
 @app.route('/lookup-product', methods=['GET'])
 def look_up_product():
     product_url = request.args.get('url')
+    print(product_url)
     if not product_url:
         return jsonify({"error": "Product URL is required"}), 400
 
     url = "https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product"
     asin = extract_asin(product_url)
-    new_url = f"amazon.com/dp/{asin}"
-
+    new_url = f"https://www.amazon.com/dp/{asin}"
+    print(new_url)
     uid = request.args.get('uid')
     if uid:
         add_search_entry(uid, new_url)
@@ -141,15 +142,17 @@ def look_up_product():
         "X-RapidAPI-Key": str(os.environ.get('AXESSO_API_KEY')),
         "X-RapidAPI-Host": str(os.environ.get('AXESSO_HOST')),
     }
-    # response={'responseStatus': "a"}
 
-    # response = requests.get(url, headers=headers, params=querystring)
-    # if response['responseStatus'] is None or response['responseStatus'] != 'PRODUCT_FOUND_RESPONSE':
-    #     abort(404)
-    # data = response.json()
-    # write_to_json(data, 'loop_up_product.json')
+    response = requests.get(url, headers=headers, params=querystring)
+
+    data = response.json()
+    # print(data)
+    write_to_json(data, 'loop_up_product.json')
 
     data = read_from_json("loop_up_product.json")
+    if not isinstance(data, dict) or data['responseStatus'] is None or data['responseStatus'] != 'PRODUCT_FOUND_RESPONSE':
+        return jsonify({"error": "Product not found"}), 404
+
     rating = 0
     rating_count = 0
     reviews_text = ""
@@ -196,15 +199,15 @@ def look_up_seller_prices():
         "X-RapidAPI-Host": str(os.environ.get('AXESSO_HOST')),
     }
 
-    # response = requests.get(url, headers=headers, params=querystring)
-    #
-    # response = requests.get(url, headers=headers, params=querystring)
-    # if response['responseStatus'] is None or response['responseStatus'] != 'PRODUCT_FOUND_RESPONSE':
-    #     abort(404)
-    # data = response.json()
+    response = requests.get(url, headers=headers, params=querystring)
+
+    data = response.json()
     # write_to_json(data, 'loop_up_seller_prices.json')
 
-    data = read_from_json("loop_up_seller_prices.json")
+    # data = read_from_json("loop_up_seller_prices.json")
+    if data['responseStatus'] is None or data['responseStatus'] != 'PRODUCT_FOUND_RESPONSE':
+        return jsonify({"error": "Product not found"}), 404
+
     offers = []
     for offer in data['offers']:
         product = {
@@ -223,7 +226,7 @@ def look_up_seller_prices():
     ascending = True
     if order == "descending":
         ascending = False
-    if sorted_by == "rating":
+    if sorted_by == "sellerRating":
         return sort_offers_by_seller_rating(offers, ascending)
     if sorted_by == "price":
         return sort_offers_by_price(offers, ascending)
@@ -255,15 +258,17 @@ def search_by_keyword():
         "X-RapidAPI-Host": str(os.environ.get('AXESSO_HOST')),
     }
 
-    # response = requests.get(url, headers=headers, params=querystring)
-    #
-    # response = requests.get(url, headers=headers, params=querystring)
-    # if response['responseStatus'] is None or response['responseStatus'] != 'PRODUCT_FOUND_RESPONSE':
-    #     abort(404)
-    # data = response.json()
+    response = requests.get(url, headers=headers, params=querystring)
+
+    response = requests.get(url, headers=headers, params=querystring)
+
+    data = response.json()
     # write_to_json(data, 'search_by_keyword.json')
 
-    data = read_from_json("search_by_keyword.json")
+    # data = read_from_json("search_by_keyword.json")
+
+    if data['responseStatus'] is None or data['responseStatus'] != 'PRODUCT_FOUND_RESPONSE':
+        return jsonify({"error": "Product not found"}), 404
     products = []
     for product in data["searchProductDetails"]:
         info = {
