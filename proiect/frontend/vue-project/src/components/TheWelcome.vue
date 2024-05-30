@@ -47,16 +47,16 @@
         <h2 style="color: #333;">Search by URL</h2>
         <div class="search-form">
           <input v-model="productURL" placeholder="Enter product URL" style="color: #333;" />
-          <select v-model="sortedBy" style="color: #333;">
+          <select v-model="sortedByURL" style="color: #333;">
             <option value="price">Price</option>
             <option value="sellerRating">Seller Rating</option>
           </select>
-          <select v-model="order" style="color: #333;">
+          <select v-model="orderURL" style="color: #333;">
             <option value="ascending">Ascending</option>
             <option value="descending">Descending</option>
           </select>
-          <input v-model="minPrice" type="number" placeholder="Min price" style="color: #333;" />
-          <input v-model="maxPrice" type="number" placeholder="Max price" style="color: #333;" />
+          <input v-model="minPriceURL" type="number" placeholder="Min price" style="color: #333;" />
+          <input v-model="maxPriceURL" type="number" placeholder="Max price" style="color: #333;" />
           <button @click="searchByURL" style="background-color: #007bff; color: white;">Search</button>
         </div>
         <div v-if="sellerPrices.length > 0" class="results">
@@ -137,9 +137,13 @@ const password = ref('')
 const keyword = ref('')
 const productName = ref('')
 const sortedBy = ref('price')
+const sortedByURL = ref('price')
 const order = ref('ascending')
+const orderURL = ref('ascending')
 const minPrice = ref('')
 const maxPrice = ref('')
+const minPriceURL = ref('')
+const maxPriceURL = ref('')
 const products = ref([])
 const lowestPriceProduct = ref(null)
 const lowestPriceProvider = ref(null)
@@ -316,10 +320,10 @@ const searchByURL = async () => {
     const response = await axios.get('http://127.0.0.1:5000/lookup-seller-prices', {
       params: {
         url: productURL.value,
-        sortedBy: sortedBy.value,
-        order: order.value,
-        minPrice: minPrice.value,
-        maxPrice: maxPrice.value,
+        sortedBy: sortedByURL.value,
+        order: orderURL.value,
+        minPrice: minPriceURL.value,
+        maxPrice: maxPriceURL.value,
         uid: user.value ? user.value.uid : null
       }
     })
