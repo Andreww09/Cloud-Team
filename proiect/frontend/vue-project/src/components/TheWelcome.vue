@@ -226,7 +226,7 @@ const searchByKeyword = async () => {
         order: order.value,
         minPrice: minPrice.value,
         maxPrice: maxPrice.value,
-        uid: user.value.uid
+        uid: user.value ? user.value.uid : null
       }
     })
     products.value = response.data
@@ -243,7 +243,7 @@ const searchByName = async () => {
     const response = await axios.get('http://127.0.0.1:5000/search-by-keyword', {
       params: {
         keyword: productName.value,
-        uid: user.value.uid
+        uid: user.value ? user.value.uid : null
       }
     })
     const searchResults = response.data
@@ -269,7 +269,7 @@ const searchLowestPriceByAsin = async (asin) => {
         url: `https://www.amazon.com/dp/${asin}`,
         sortedBy: 'price',
         order: 'ascending',
-        uid: user.value.uid
+        uid: user.value ? user.value.uid : null
       }
     })
     const offers = response.data
@@ -289,7 +289,7 @@ const handleProductClickAndUpdateView = async (asin) => {
     const response = await axios.get('http://127.0.0.1:5000/search-by-keyword', {
       params: {
         keyword: asin,
-        uid: user.value.uid
+        uid: user.value ? user.value.uid : null
       }
     })
     const productDetails = response.data
@@ -320,7 +320,7 @@ const searchByURL = async () => {
         order: order.value,
         minPrice: minPrice.value,
         maxPrice: maxPrice.value,
-        uid: user.value.uid
+        uid: user.value ? user.value.uid : null
       }
     })
     const index = productURL.value.indexOf("dp/") + "dp/".length;
